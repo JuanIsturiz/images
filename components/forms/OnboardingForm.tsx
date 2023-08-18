@@ -22,6 +22,8 @@ import { useState } from "react";
 import { useUploadThing } from "@/lib/uploadthing";
 import { isBase64Image } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
+import { updateUser } from "@/lib/actions/user.actions";
+import { useToast } from "../ui/use-toast";
 
 interface User {
   id: string;
@@ -37,6 +39,8 @@ interface OnboardingFormProps {
 const OnboardingForm: React.FC<OnboardingFormProps> = ({ user }) => {
   const router = useRouter();
   const pathname = usePathname();
+
+  const { toast } = useToast();
 
   const [files, setFiles] = useState<File[]>([]);
   const { startUpload } = useUploadThing("media");
@@ -80,38 +84,44 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ user }) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
 
-    console.log(values);
-    // const blob = values.profile_photo;
-    // const hasImageChanged = isBase64Image(blob);
+    const blob = values.profile_photo;
+    const hasImageChanged = isBase64Image(blob);
 
-    // if (hasImageChanged) {
-    //   const imgRes = await startUpload(files);
+    if (hasImageChanged) {
+      const imgRes = await startUpload(files);
+      if (imgRes && imgRes[0].url) {
+        values.profile_photo = imgRes[0].url;
+        toast({
+          duration: 2000,
+          description: "New profile photo uploaded successfully.",
+        });
+      }
+    }
 
-    //   if (imgRes && imgRes[0].url) {
-    //     values.profile_photo = imgRes[0].url;
-    //   }
-    // }
-
-    // await updateUser({
-    //   userId: user.id,
-    //   username: values.username,
-    //   name: values.name,
-    //   bio: values.bio,
-    //   image: values.profile_photo,
-    //   path: pathname,
-    // });
-
-    // if (pathname === "/profile/edit") {
-    //   router.back();
-    // } else {
-    //   router.push("/");
-    // }
+    await updateUser({
+      userId: user.id,
+      username: values.username,
+      name: values.name,
+      bio: values.bio,
+      image: values.profile_photo,
+      path: pathname,
+    });
+    toast({
+      className: "mt-2",
+      duration: 2000,
+      description: "User profile updated.",
+    });
+    if (pathname === "/profile/edit") {
+      router.back();
+    } else {
+      router.push("/");
+    }
   }
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-1/2 mx-auto p-4 bg-zinc-900 rounded shadow-lg"
+        className="w-1/2 mx-auto mb-2 p-4 dark:bg-zinc-900 rounded border shadow-lg dark:border-zinc-800"
       >
         <FormField
           control={form.control}
@@ -144,7 +154,7 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ user }) => {
                     type="file"
                     accept="image/*"
                     placeholder="Upload a photo"
-                    className="cursor-pointer border-none !bg-transparent outline-none file:text-zinc-300"
+                    className="cursor-pointer border-none !bg-transparent outline-none dark:file:text-zinc-300"
                     onChange={(e) => handleImage(e, field.onChange)}
                   />
                 </FormControl>
@@ -208,7 +218,9 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ user }) => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button className="w-full" type="submit">
+          Submit
+        </Button>
       </form>
     </Form>
   );

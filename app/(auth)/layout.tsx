@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
 import TopBar from "@/components/shared/TopBar";
 import { Image } from "lucide-react";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,12 +26,9 @@ export default function AuthLayout({
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <div className="w-full max-w-7xl mx-auto px-2">
               <TopBar />
-              {/* <div className="flex items-center gap-2 mb-4">
-                <Image size={32} />
-                <h1 className="font-semibold text-3xl uppercase">images</h1>
-              </div> */}
               <div className="mt-2">{children}</div>
             </div>
+            <Toaster />
           </ThemeProvider>
         </ClerkProvider>
       </body>
