@@ -73,12 +73,40 @@ export async function createImage({
 export async function getImages() {
   try {
     connectDB();
-    return await Image.find()
+    const images = await Image.find()
       .sort({
         createdAt: "desc",
       })
-      .populate({ path: "author", model: User });
+      .populate({ path: "author", model: User, select: "id image username" });
+    return images;
   } catch (error: any) {
     throw new Error(`Failed to fetch images: ${error.message}`);
+  }
+}
+
+export async function favImage(
+  isLiked: boolean,
+  imageId: string,
+  userId: string,
+  path: string
+) {
+  try {
+    connectDB();
+    if (!isLiked) {
+      await Image.findByIdAndUpdate(imageId, {
+        $push: {
+          likedBy: userId,
+        },
+      });
+    } else {
+      await Image.findByIdAndUpdate(imageId, {
+        $pull: {
+          likedBy: userId,
+        },
+      });
+    }
+    revalidatePath(path);
+  } catch (error: any) {
+    throw new Error(`Failed to like image: ${error.message}`);
   }
 }
