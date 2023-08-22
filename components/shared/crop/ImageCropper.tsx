@@ -15,7 +15,7 @@ import { Slider } from "@/components/ui/slider";
 interface ImageCropperProps {
   imageToCrop: string | null;
   setImageToCrop: (img: string | null) => void;
-  setImage: (img: string | null) => void;
+  setImage: (img: { file: any; url: any } | null) => void;
 }
 
 const ImageCropper: React.FC<ImageCropperProps> = ({
@@ -45,7 +45,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
         croppedAreaPixels,
         rotation
       );
-      setImage(url);
+      setImage({ file, url });
       setOpen(false);
     } catch (error: any) {
       console.log(error.message);

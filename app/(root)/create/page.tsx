@@ -11,7 +11,7 @@ export default async function Home() {
   if (user && !userInfo?.onboarded) redirect("/onboarding");
 
   return (
-    <section className="px-1 my-3">
+    <section className="px-1 my-3 flex-1">
       <h1>New Image</h1>
       <CreateImageForm userId={JSON.stringify(userInfo._id)} />
     </section>

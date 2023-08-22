@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
 import TopBar from "@/components/shared/TopBar";
 import SideBar from "@/components/shared/SideBar";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ClerkProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeProvider attribute="class" defaultTheme="dark">
             <main className="w-full max-w-7xl mx-auto px-2">
               <TopBar />
               <div className="flex gap-3">
@@ -30,6 +31,7 @@ export default function RootLayout({
                 {children}
               </div>
             </main>
+            <Toaster />
           </ThemeProvider>
         </ClerkProvider>
       </body>

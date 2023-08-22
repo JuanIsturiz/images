@@ -9,18 +9,16 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useUploadThing } from "@/lib/uploadthing";
 import { usePathname, useRouter } from "next/navigation";
 import { useToast } from "../ui/use-toast";
-import { isBase64Image } from "@/lib/utils";
 import { createImage } from "@/lib/actions/image.actions";
 import ImageCropper from "../shared/crop/ImageCropper";
 import Image from "next/image";
@@ -36,10 +34,15 @@ const CreateImageForm: React.FC<CreateImageFormProps> = ({ userId }) => {
 
   const fileRef = useRef<HTMLInputElement | null>(null);
 
-  const [files, setFiles] = useState<File[]>([]);
   const [imageToCrop, setImageToCrop] = useState<string | null>(null);
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<{ file: any; url: any } | null>(null);
   const { startUpload } = useUploadThing("media");
+
+  const [isNoImage, setIsNoImage] = useState(false);
+
+  useEffect(() => {
+    setIsNoImage(false);
+  }, [image]);
 
   const form = useForm<z.infer<typeof ImageValidation>>({
     resolver: zodResolver(ImageValidation),
@@ -52,7 +55,6 @@ const CreateImageForm: React.FC<CreateImageFormProps> = ({ userId }) => {
 
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      setFiles(Array.from(e.target.files));
 
       if (!file.type.includes("image")) return;
 
@@ -65,14 +67,13 @@ const CreateImageForm: React.FC<CreateImageFormProps> = ({ userId }) => {
   };
 
   async function onSubmit(values: z.infer<typeof ImageValidation>) {
-    if (!image) return;
-
+    if (!image) {
+      setIsNoImage(true);
+      return;
+    }
     let uploadedImage;
-    const blob = image;
-    const hasImageChanged = isBase64Image(blob);
-
-    if (hasImageChanged) {
-      const imgRes = await startUpload(files);
+    if (image.file) {
+      const imgRes = await startUpload([image.file]);
       if (imgRes && imgRes[0].url) {
         uploadedImage = imgRes[0].url;
       }
@@ -86,7 +87,7 @@ const CreateImageForm: React.FC<CreateImageFormProps> = ({ userId }) => {
       return;
     }
     await createImage({
-      author: userId,
+      author: JSON.parse(userId),
       imageUrl: uploadedImage,
       title: values.title,
       path: pathname,
@@ -109,63 +110,81 @@ const CreateImageForm: React.FC<CreateImageFormProps> = ({ userId }) => {
         <ImageCropper
           imageToCrop={imageToCrop}
           setImageToCrop={handleCrop}
-          setImage={(img: string | null) => setImage(img)}
+          setImage={(img: { file: any; url: any } | null) => setImage(img)}
         />
       )}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex gap-2 w-5/6 p-2 dark:bg-zinc-900 rounded border shadow-lg dark:border-zinc-800"
+        >
           <div>
-            <input
-              ref={fileRef}
-              type="file"
-              accept="image/*"
-              onChange={handleImage}
-              className="hidden"
-            />
-            <p onClick={() => fileRef.current?.click()}>SELECT FILE HERE</p>
+            {!image && (
+              <Image
+                src={"/assets/profile.svg"}
+                alt="Image"
+                width={400}
+                height={400}
+                className="rounded-sm shadow-lg"
+              />
+            )}
+            {image && (
+              <Image
+                src={image.url}
+                alt="Image"
+                width={400}
+                height={400}
+                className="rounded-sm shadow-lg"
+              />
+            )}
+            <div className="mt-4">
+              <input
+                ref={fileRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImage}
+                className="hidden"
+              />
+              <div className="flex gap-2 items-center">
+                <p>Select your image</p>
+                <Button
+                  type="button"
+                  className="font-medium"
+                  onClick={() => fileRef.current?.click()}
+                >
+                  Browse...
+                </Button>
+              </div>
+            </div>
           </div>
-          {image && <Image src={image} alt="Image" width={400} height={400} />}
-          {/* <FormField
-            control={form.control}
-            name="imageUrl"
-            render={({ field }) => (
-              <FormItem className="mb-4">
-                <div className="">
-                  <FormLabel className="flex items-center justify-center bg-dark-4">
-                    {image ? (
-                      <Image
-                        src={image}
-                        alt="Profile Photo"
-                        width={400}
-                        height={400}
-                        priority
-                        className="object-contain cursor-pointer"
-                      />
-                    ) : (
-                      <Image
-                        src={"/assets/profile.svg"}
-                        alt="Profile Photo"
-                        width={400}
-                        height={400}
-                        className="object-contain cursor-pointer"
-                      />
-                    )}
-                  </FormLabel>
-                  <FormControl className="flex-1 text-lg">
+          <div className="w-5/6">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem className="mb-4">
+                  <FormLabel className="text-md">Title</FormLabel>
+                  <FormControl>
                     <Input
-                      type="file"
-                      accept="image/*"
-                      placeholder="Upload a photo"
-                      className="cursor-pointer border-none !bg-transparent outline-none dark:file:text-zinc-300"
-                      onChange={(e) => handleImage(e, field.onChange)}
+                      className="focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
+                      type="text"
+                      placeholder="Give your image a title"
+                      {...field}
                     />
                   </FormControl>
-                </div>
-                <FormDescription>This is your profile picture.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button className="w-full" type="submit">
+              Submit
+            </Button>
+            <div className="mt-2">
+              {isNoImage && (
+                <p className=" text-red-500">! Please select a valid Image</p>
+              )}
+            </div>
+          </div>
         </form>
       </Form>
     </>

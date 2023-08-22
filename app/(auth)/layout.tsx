@@ -23,7 +23,7 @@ export default function AuthLayout({
     <html lang="en">
       <body className={inter.className}>
         <ClerkProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeProvider attribute="class" defaultTheme="dark">
             <div className="w-full max-w-7xl mx-auto px-2">
               <TopBar />
               <div className="mt-2">{children}</div>
