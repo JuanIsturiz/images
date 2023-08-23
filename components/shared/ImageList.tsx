@@ -42,6 +42,7 @@ const ImageList: React.FC<ImageListProps> = ({ images, userId, height }) => {
           {images?.map((image) => {
             return (
               <ImageCard
+                key={image._id}
                 image={image}
                 userId={userId}
                 pathname={pathname}

@@ -49,7 +49,16 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <section className="flex-1 mt-2">
       <div>
-        <div className="relative w-full rounded bg-zinc-100 dark:bg-zinc-900 md:h-32">
+        <div className="relative w-full rounded bg-zinc-100 dark:bg-zinc-900 h-32">
+          <div className="absolute left-52 top-4 text-lg">
+            <div className="flex gap-4 mb-2">
+              <p>Following {user.followers.length}</p>
+              <p>Followers {user.following.length}</p>
+            </div>
+            <div>
+              <p>Images {validImages.length}</p>
+            </div>
+          </div>
           <Image
             src={user.image}
             alt={"User Profile Picture"}
@@ -59,7 +68,14 @@ export default async function Page({ params }: { params: { id: string } }) {
           />
         </div>
         <div className="mt-1 ml-52 mb-6">
-          <h4 className="text-xl">@{user.username}</h4>
+          <div className="flex items-center gap-2">
+            <h4 className="text-xl">@{user.username}</h4>
+            {user.id !== userInfo.id && (
+              <Button variant={"outline"} className="px-2 h-6">
+                Follow
+              </Button>
+            )}
+          </div>
           <p className="text-zinc-500 dark:text-zinc-400">{user.bio}</p>
         </div>
       </div>
