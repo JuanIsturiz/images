@@ -84,6 +84,22 @@ export async function getImages() {
   }
 }
 
+export async function getUserImagesById(userId: string) {
+  try {
+    connectDB();
+    const images = await Image.find({
+      author: userId,
+    })
+      .sort({
+        createdAt: "desc",
+      })
+      .populate({ path: "author", model: User, select: "id image username" });
+    return images;
+  } catch (error: any) {
+    throw new Error(`Failed to fetch images: ${error.message}`);
+  }
+}
+
 export async function favImage(
   isLiked: boolean,
   imageId: string,

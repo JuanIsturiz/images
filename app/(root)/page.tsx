@@ -28,11 +28,13 @@ export default async function Home() {
       JSON.parse(JSON.stringify(userId))
     ),
   }));
+
   return (
     <section className="px-1 my-3 flex-1">
       <ImageList
         images={validImages}
         userId={JSON.parse(JSON.stringify(userInfo._id))}
+        height="h-[34rem]"
       />
     </section>
   );
