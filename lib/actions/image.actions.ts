@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { connectDB } from "../db";
 import Image from "../models/image.model";
 import User from "../models/user.model";
+import { utapi } from "uploadthing/server";
 
 interface CreateImageParams {
   author: string;
@@ -124,5 +125,58 @@ export async function favImage(
     revalidatePath(path);
   } catch (error: any) {
     throw new Error(`Failed to like image: ${error.message}`);
+  }
+}
+
+export async function deleteImage(
+  userId: string,
+  imageId: string,
+  url: string,
+  path: string
+) {
+  try {
+    connectDB();
+    const key = url.split("f/")[1];
+    const res = await utapi.deleteFiles(key);
+
+    if (res.success) {
+      await User.findByIdAndUpdate(userId, {
+        $pull: {
+          images: imageId,
+        },
+      });
+      await Image.findByIdAndDelete(imageId);
+      revalidatePath(path);
+    }
+
+    return res;
+  } catch (error: any) {
+    throw new Error(`Failed to delete image: ${error.message}`);
+  }
+}
+
+export async function getActivity(userId: string, following: string[]) {
+  try {
+    connectDB();
+
+    const images = await Image.find({
+      author: {
+        $in: following,
+      },
+    }).populate({
+      path: "User",
+      model: User,
+      select: "id username image",
+    });
+
+    // const usersFollowed = await User.find({
+    //   followed: { $in: [userId] },
+    // }).populate({ path: "Image", model: Image });
+
+    // const images = usersFollowed.map((user: any) => user.images);
+
+    return [];
+  } catch (error: any) {
+    throw new Error(`Failed to get activities: ${error.message}`);
   }
 }

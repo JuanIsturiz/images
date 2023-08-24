@@ -19,6 +19,8 @@ import {
 } from "../ui/dialog";
 import { useState } from "react";
 import { Separator } from "../ui/separator";
+import { deleteImage } from "@/lib/actions/image.actions";
+import { useToast } from "../ui/use-toast";
 
 interface ImageCardProps {
   pathname: string;
@@ -40,6 +42,32 @@ const ImageCard: React.FC<ImageCardProps> = ({
 }) => {
   const isLiked = image.likedBy.some((id) => id === userId);
   const [isOpen, setIsOpen] = useState(false);
+  const { toast } = useToast();
+
+  async function handleDelete() {
+    const res = await deleteImage(
+      userId ?? "",
+      image._id,
+      image.imageUrl,
+      pathname
+    );
+
+    if (!res.success) {
+      toast({
+        duration: 2000,
+        variant: "destructive",
+        description: "Failed to delete image.",
+      });
+    } else {
+      toast({
+        description: `Image: "${image.title.substring(
+          0,
+          5
+        )}..." deleted successfully.`,
+        duration: 2000,
+      });
+    }
+  }
 
   return (
     <>
@@ -61,9 +89,11 @@ const ImageCard: React.FC<ImageCardProps> = ({
             </Link>
           </div>
           <OptionMenu
-            openDialog={() => setIsOpen(true)}
-            authorId={image.author._id}
+            path={pathname}
             userId={userId}
+            authorId={image.author._id}
+            onDelete={handleDelete}
+            openDialog={() => setIsOpen(true)}
           />
         </div>
         <Image
@@ -95,10 +125,12 @@ const ImageCard: React.FC<ImageCardProps> = ({
 };
 
 const OptionMenu: React.FC<{
+  path: string;
   authorId: string;
   userId: string | null;
   openDialog: () => void;
-}> = ({ openDialog, authorId, userId }) => {
+  onDelete: () => void;
+}> = ({ path, authorId, userId, openDialog, onDelete }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -112,18 +144,21 @@ const OptionMenu: React.FC<{
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem
-          className="flex gap-2 items-center"
+          className="cursor-pointer flex gap-2 items-center"
           onClick={openDialog}
         >
           <Info />
           <span>View Details</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className="flex gap-2 items-center">
+        <DropdownMenuItem className="cursor-pointer flex gap-2 items-center">
           <Share />
           <span>Share</span>
         </DropdownMenuItem>
-        {authorId === userId && (
-          <DropdownMenuItem className="flex gap-2 items-center">
+        {path.includes("/profile") && authorId === userId && (
+          <DropdownMenuItem
+            className="cursor-pointer flex gap-2 items-center"
+            onClick={onDelete}
+          >
             <Trash />
             <span>Delete</span>
           </DropdownMenuItem>

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { connectDB } from "../db";
 import User from "../models/user.model";
+import Image from "../models/image.model";
 
 export async function getUser(id: string) {
   try {
@@ -90,3 +91,29 @@ export async function followUser(
     throw new Error(`Failed to perform following action: ${error.message}`);
   }
 }
+
+// export async function getActivity(userId: string, following: string[]) {
+//   try {
+//     connectDB();
+
+//     const images = await Image.find({
+//       author: {
+//         $in: following
+//       }
+//     }).populate({
+//       path: 'User',
+//       model: User,
+//       select: 'id username image'
+//     })
+
+//     // const usersFollowed = await User.find({
+//     //   followed: { $in: [userId] },
+//     // }).populate({ path: "Image", model: Image });
+
+//     // const images = usersFollowed.map((user: any) => user.images);
+
+//     return [];
+//   } catch (error: any) {
+//     throw new Error(`Failed to get activities: ${error.message}`);
+//   }
+// }

@@ -14,8 +14,6 @@ const TopBar = () => {
   const { resolvedTheme } = useTheme();
   const pathname = usePathname();
 
-  console.log({ pathname });
-
   return (
     <div className="flex justify-between items-center p-2 border-b-2 ">
       <div>
