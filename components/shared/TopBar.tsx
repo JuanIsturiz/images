@@ -8,9 +8,13 @@ import { ModeToggle } from "@/components/shared/ModeToggle";
 
 import { dark } from "@clerk/themes";
 import { useTheme } from "next-themes";
+import { usePathname } from "next/navigation";
 
 const TopBar = () => {
   const { resolvedTheme } = useTheme();
+  const pathname = usePathname();
+
+  console.log({ pathname });
 
   return (
     <div className="flex justify-between items-center p-2 border-b-2 ">
@@ -31,14 +35,16 @@ const TopBar = () => {
             }}
           />
         </SignedIn>
-        <SignedOut>
-          <SignInButton
-            afterSignInUrl="/onboarding"
-            afterSignUpUrl="/onboarding"
-          >
-            <Button>Sign In</Button>
-          </SignInButton>
-        </SignedOut>
+        {!pathname.includes("sign") && (
+          <SignedOut>
+            <SignInButton
+              afterSignInUrl="/onboarding"
+              afterSignUpUrl="/onboarding"
+            >
+              <Button>Sign In</Button>
+            </SignInButton>
+          </SignedOut>
+        )}
         <div>
           <ModeToggle />
         </div>

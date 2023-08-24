@@ -11,7 +11,7 @@ import {
 import { Button } from "../ui/button";
 import { GripHorizontal, Heart, Info, Share, Trash } from "lucide-react";
 import { favImage } from "@/lib/actions/image.actions";
-import { redirect, usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import ImageCard from "./ImageCard";
 
@@ -23,6 +23,7 @@ interface ImageListProps {
 
 const ImageList: React.FC<ImageListProps> = ({ images, userId, height }) => {
   const pathname = usePathname();
+  const router = useRouter();
   async function likeImage(
     isLiked: boolean,
     imageId: string,
@@ -30,7 +31,8 @@ const ImageList: React.FC<ImageListProps> = ({ images, userId, height }) => {
     path: string
   ) {
     if (!userId) {
-      redirect("/sign-in");
+      router.push("/sign-in");
+      return;
     }
     await favImage(isLiked, imageId, userId, path);
   }

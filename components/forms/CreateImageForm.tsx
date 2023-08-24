@@ -87,7 +87,7 @@ const CreateImageForm: React.FC<CreateImageFormProps> = ({ userId }) => {
       return;
     }
     await createImage({
-      author: JSON.parse(userId),
+      author: userId,
       imageUrl: uploadedImage,
       title: values.title,
       path: pathname,

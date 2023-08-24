@@ -1,11 +1,13 @@
 import ImageList from "@/components/shared/ImageList";
 import { Button } from "@/components/ui/button";
 import { getUserImagesById } from "@/lib/actions/image.actions";
-import { getUser } from "@/lib/actions/user.actions";
+import { followUser, getUser } from "@/lib/actions/user.actions";
+import { parseJson } from "@/lib/utils";
 import { currentUser } from "@clerk/nextjs";
 import { Home } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const user = await getUser(params.id);
@@ -14,14 +16,12 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const userInfo = await getUser(clerkUser?.id ?? "");
 
-  const userImages = await getUserImagesById(
-    JSON.parse(JSON.stringify(user._id))
-  );
+  const userImages = await getUserImagesById(parseJson(user._id));
 
   const validImages = userImages.map((img) => ({
-    _id: JSON.parse(JSON.stringify(img._id)),
+    _id: parseJson(img._id),
     author: {
-      _id: JSON.parse(JSON.stringify(img.author._id)),
+      _id: parseJson(img.author._id),
       id: img.author.id,
       username: img.author.username,
       image: img.author.image,
@@ -29,9 +29,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     imageUrl: img.imageUrl,
     title: img.title,
     createdAt: img.createdAt,
-    likedBy: img.likedBy.map((userId: {}) =>
-      JSON.parse(JSON.stringify(userId))
-    ),
+    likedBy: img.likedBy.map(parseJson),
   }));
 
   if (!user)
@@ -46,6 +44,23 @@ export default async function Page({ params }: { params: { id: string } }) {
         </Link>
       </section>
     );
+
+  const isFollowed = user.followers
+    .map(parseJson)
+    .some((userId: string) => userId === parseJson(userInfo._id));
+
+  async function follow() {
+    if (!clerkUser || !userInfo.onboarded) {
+      redirect("/onboarding");
+    }
+    await followUser(
+      isFollowed,
+      parseJson(userInfo._id),
+      parseJson(user._id),
+      `/profile/${user._id}`
+    );
+  }
+
   return (
     <section className="flex-1 mt-2">
       <div>
@@ -71,8 +86,12 @@ export default async function Page({ params }: { params: { id: string } }) {
           <div className="flex items-center gap-2">
             <h4 className="text-xl">@{user.username}</h4>
             {user.id !== userInfo.id && (
-              <Button variant={"outline"} className="px-2 h-6">
-                Follow
+              <Button
+                variant={"outline"}
+                className={`px-2 h-6 ${isFollowed && "opacity-80"}`}
+                onClick={() => void follow()}
+              >
+                {isFollowed ? "Following" : "Follow"}
               </Button>
             )}
           </div>
@@ -83,7 +102,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         <ImageList
           height="h-72"
           images={validImages}
-          userId={JSON.parse(JSON.stringify(userInfo._id))}
+          userId={userInfo ? parseJson(userInfo._id) : null}
         />
       </div>
     </section>

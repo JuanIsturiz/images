@@ -53,3 +53,40 @@ export async function updateUser({
     throw new Error(`Failed to update user: ${error.message}`);
   }
 }
+
+export async function followUser(
+  isFollowed: boolean,
+  userId: string,
+  otherUserId: string,
+  path: string
+) {
+  try {
+    connectDB();
+    if (!isFollowed) {
+      await User.findByIdAndUpdate(userId, {
+        $push: {
+          following: otherUserId,
+        },
+      });
+      await User.findByIdAndUpdate(otherUserId, {
+        $push: {
+          followers: otherUserId,
+        },
+      });
+    } else {
+      await User.findByIdAndUpdate(userId, {
+        $pull: {
+          following: otherUserId,
+        },
+      });
+      await User.findByIdAndUpdate(otherUserId, {
+        $pull: {
+          followers: otherUserId,
+        },
+      });
+    }
+    revalidatePath(path);
+  } catch (error: any) {
+    throw new Error(`Failed to perform following action: ${error.message}`);
+  }
+}
