@@ -13,6 +13,7 @@ export default async function Page() {
     username: user?.username ?? "",
     name: `${user?.firstName} ${user?.lastName}`,
   };
+
   return (
     <section>
       <div className="my-4">

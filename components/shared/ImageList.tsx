@@ -1,18 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { ScrollArea } from "../ui/scroll-area";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
-import { GripHorizontal, Heart, Info, Share, Trash } from "lucide-react";
 import { favImage } from "@/lib/actions/image.actions";
 import { useRouter, usePathname } from "next/navigation";
-import Link from "next/link";
 import ImageCard from "./ImageCard";
 
 interface ImageListProps {

@@ -63,6 +63,7 @@ export async function followUser(
 ) {
   try {
     connectDB();
+
     if (!isFollowed) {
       await User.findByIdAndUpdate(userId, {
         $push: {
@@ -71,7 +72,7 @@ export async function followUser(
       });
       await User.findByIdAndUpdate(otherUserId, {
         $push: {
-          followers: otherUserId,
+          followers: userId,
         },
       });
     } else {
@@ -82,7 +83,7 @@ export async function followUser(
       });
       await User.findByIdAndUpdate(otherUserId, {
         $pull: {
-          followers: otherUserId,
+          followers: userId,
         },
       });
     }
