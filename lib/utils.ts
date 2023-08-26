@@ -29,3 +29,12 @@ export function validateImage(img: any) {
     likedBy: img.likedBy.map(parseJson),
   };
 }
+
+export function validateFollowUser(followUser: any) {
+  return {
+    _id: parseJson(followUser._id),
+    id: followUser.id,
+    username: followUser.username,
+    image: followUser.image,
+  };
+}

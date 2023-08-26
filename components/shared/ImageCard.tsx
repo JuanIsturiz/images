@@ -92,8 +92,8 @@ const ImageCard: React.FC<ImageCardProps> = ({
         <Image
           src={image.imageUrl}
           alt={image.title}
-          width={224}
-          height={224}
+          width={220}
+          height={220}
         />
         <div className="cursor-pointer absolute z-10 bottom-3 right-3 p-1.5 rounded-full bg-zinc-100 dark:bg-zinc-900">
           <Heart

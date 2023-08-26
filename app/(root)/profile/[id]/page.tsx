@@ -1,9 +1,10 @@
 import FollowButton from "@/components/shared/FollowButton";
+import FollowList from "@/components/shared/FollowList";
 import ImageList from "@/components/shared/ImageList";
 import { Button } from "@/components/ui/button";
 import { getUserImagesById } from "@/lib/actions/image.actions";
-import { getUser } from "@/lib/actions/user.actions";
-import { parseJson, validateImage } from "@/lib/utils";
+import { getFollow, getUser } from "@/lib/actions/user.actions";
+import { parseJson, validateFollowUser, validateImage } from "@/lib/utils";
 import { currentUser } from "@clerk/nextjs";
 import { Home } from "lucide-react";
 import Image from "next/image";
@@ -11,14 +12,6 @@ import Link from "next/link";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const user = await getUser(params.id);
-
-  const clerkUser = await currentUser();
-
-  const userInfo = await getUser(clerkUser?.id ?? "");
-
-  const userImages = await getUserImagesById(parseJson(user._id));
-
-  const validImages = userImages.map(validateImage);
 
   if (!user)
     return (
@@ -33,6 +26,19 @@ export default async function Page({ params }: { params: { id: string } }) {
       </section>
     );
 
+  const clerkUser = await currentUser();
+
+  const userInfo = await getUser(clerkUser?.id ?? "");
+
+  const followInfo = await getFollow(parseJson(user._id));
+
+  const userImages = await getUserImagesById(parseJson(user._id));
+
+  const validImages = userImages.map(validateImage);
+
+  const validFollowers = followInfo.followers.map(validateFollowUser);
+  const validFollowing = followInfo.following.map(validateFollowUser);
+
   const isFollowed = user.followers
     .map(parseJson)
     .some((userId: string) => userId === parseJson(userInfo._id));
@@ -42,11 +48,11 @@ export default async function Page({ params }: { params: { id: string } }) {
       <div>
         <div className="relative w-full rounded bg-zinc-100 dark:bg-zinc-900 h-[20vh]">
           <div className="absolute left-52 top-4 text-lg">
-            <div className="flex gap-4 mb-2">
-              <p>Following {user.following.length}</p>
-              <p>Followers {user.followers.length}</p>
+            <div className="flex gap-2 mb-2">
+              <FollowList list={validFollowing} title="Following" />
+              <FollowList list={validFollowers} title="Followers" />
             </div>
-            <div>
+            <div className="ml-2">
               <p>Images {validImages.length}</p>
             </div>
           </div>

@@ -93,28 +93,26 @@ export async function followUser(
   }
 }
 
-// export async function getActivity(userId: string, following: string[]) {
-//   try {
-//     connectDB();
+export async function getFollow(userId: string) {
+  try {
+    connectDB();
+    const user = await User.findById(userId)
+      .populate({
+        path: "followers",
+        model: User,
+        select: "id username image",
+      })
+      .populate({
+        path: "following",
+        model: User,
+        select: "id username image",
+      });
 
-//     const images = await Image.find({
-//       author: {
-//         $in: following
-//       }
-//     }).populate({
-//       path: 'User',
-//       model: User,
-//       select: 'id username image'
-//     })
-
-//     // const usersFollowed = await User.find({
-//     //   followed: { $in: [userId] },
-//     // }).populate({ path: "Image", model: Image });
-
-//     // const images = usersFollowed.map((user: any) => user.images);
-
-//     return [];
-//   } catch (error: any) {
-//     throw new Error(`Failed to get activities: ${error.message}`);
-//   }
-// }
+    return {
+      followers: user.followers,
+      following: user.following,
+    };
+  } catch (error: any) {
+    throw new Error(`Failed to get followers and followings: ${error.message}`);
+  }
+}
