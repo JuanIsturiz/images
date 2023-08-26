@@ -169,14 +169,7 @@ export async function getActivity(userId: string, following: string[]) {
       select: "id username image",
     });
 
-    console.log({ images });
-    // const usersFollowed = await User.find({
-    //   followed: { $in: [userId] },
-    // }).populate({ path: "Image", model: Image });
-
-    // const images = usersFollowed.map((user: any) => user.images);
-
-    return [];
+    return images;
   } catch (error: any) {
     throw new Error(`Failed to get activities: ${error.message}`);
   }

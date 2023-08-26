@@ -13,3 +13,19 @@ export function isBase64Image(imageData: string) {
 export function parseJson(obj: {}) {
   return JSON.parse(JSON.stringify(obj));
 }
+
+export function validateImage(img: any) {
+  return {
+    _id: parseJson(img._id),
+    author: {
+      _id: parseJson(img.author._id),
+      id: img.author.id,
+      username: img.author.username,
+      image: img.author.image,
+    },
+    imageUrl: img.imageUrl,
+    title: img.title,
+    createdAt: img.createdAt,
+    likedBy: img.likedBy.map(parseJson),
+  };
+}

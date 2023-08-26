@@ -1,7 +1,8 @@
 import { getUser } from "@/lib/actions/user.actions";
 import { getActivity } from "@/lib/actions/image.actions";
-import { parseJson } from "@/lib/utils";
+import { parseJson, validateImage } from "@/lib/utils";
 import { currentUser } from "@clerk/nextjs";
+import ActivityList from "@/components/shared/ActivityList";
 
 export default async function Page() {
   const user = await currentUser();
@@ -13,5 +14,14 @@ export default async function Page() {
     userInfo.following.map(parseJson)
   );
 
-  return <section className="flex-1"></section>;
+  const validActivities = activities.map(validateImage);
+
+  return (
+    <section className="px-1 my-3 flex-1">
+      <ActivityList
+        activities={validActivities}
+        userId={parseJson(userInfo._id)}
+      />
+    </section>
+  );
 }

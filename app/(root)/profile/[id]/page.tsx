@@ -3,7 +3,7 @@ import ImageList from "@/components/shared/ImageList";
 import { Button } from "@/components/ui/button";
 import { getUserImagesById } from "@/lib/actions/image.actions";
 import { getUser } from "@/lib/actions/user.actions";
-import { parseJson } from "@/lib/utils";
+import { parseJson, validateImage } from "@/lib/utils";
 import { currentUser } from "@clerk/nextjs";
 import { Home } from "lucide-react";
 import Image from "next/image";
@@ -18,19 +18,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const userImages = await getUserImagesById(parseJson(user._id));
 
-  const validImages = userImages.map((img) => ({
-    _id: parseJson(img._id),
-    author: {
-      _id: parseJson(img.author._id),
-      id: img.author.id,
-      username: img.author.username,
-      image: img.author.image,
-    },
-    imageUrl: img.imageUrl,
-    title: img.title,
-    createdAt: img.createdAt,
-    likedBy: img.likedBy.map(parseJson),
-  }));
+  const validImages = userImages.map(validateImage);
 
   if (!user)
     return (
