@@ -15,7 +15,7 @@ const TopBar = () => {
   const pathname = usePathname();
 
   return (
-    <div className="flex justify-between items-center p-2 border-b-2 ">
+    <div className="h-[8vh] flex justify-between items-center p-2 border-b-2">
       <div>
         <Link href={"/"}>
           <div className="flex items-center gap-2">

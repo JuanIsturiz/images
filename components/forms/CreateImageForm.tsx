@@ -22,6 +22,7 @@ import { useToast } from "../ui/use-toast";
 import { createImage } from "@/lib/actions/image.actions";
 import ImageCropper from "../shared/crop/ImageCropper";
 import Image from "next/image";
+import { Loader2 } from "lucide-react";
 
 interface CreateImageFormProps {
   userId: string;
@@ -36,6 +37,7 @@ const CreateImageForm: React.FC<CreateImageFormProps> = ({ userId }) => {
 
   const [imageToCrop, setImageToCrop] = useState<string | null>(null);
   const [image, setImage] = useState<{ file: any; url: any } | null>(null);
+  const [isSubmited, setIsSubmited] = useState(false);
   const { startUpload } = useUploadThing("media");
 
   const [isNoImage, setIsNoImage] = useState(false);
@@ -67,6 +69,9 @@ const CreateImageForm: React.FC<CreateImageFormProps> = ({ userId }) => {
   };
 
   async function onSubmit(values: z.infer<typeof ImageValidation>) {
+    if (isSubmited) return;
+    console.log("submit");
+    setIsSubmited(true);
     if (!image) {
       setIsNoImage(true);
       return;
@@ -84,6 +89,7 @@ const CreateImageForm: React.FC<CreateImageFormProps> = ({ userId }) => {
         variant: "destructive",
         description: "Failed to post image.",
       });
+      setIsSubmited(false);
       return;
     }
     await createImage({
@@ -176,7 +182,8 @@ const CreateImageForm: React.FC<CreateImageFormProps> = ({ userId }) => {
                 </FormItem>
               )}
             />
-            <Button className="w-full" type="submit">
+            <Button className={"w-full"} type="submit" disabled={isSubmited}>
+              {isSubmited && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Submit
             </Button>
             <div className="mt-2">

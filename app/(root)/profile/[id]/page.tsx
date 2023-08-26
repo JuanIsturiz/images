@@ -49,12 +49,10 @@ export default async function Page({ params }: { params: { id: string } }) {
     .map(parseJson)
     .some((userId: string) => userId === parseJson(userInfo._id));
 
-  console.log({ followers: user.followers.map(parseJson) });
-
   return (
     <section className="flex-1 mt-2">
       <div>
-        <div className="relative w-full rounded bg-zinc-100 dark:bg-zinc-900 h-32">
+        <div className="relative w-full rounded bg-zinc-100 dark:bg-zinc-900 h-[20vh]">
           <div className="absolute left-52 top-4 text-lg">
             <div className="flex gap-4 mb-2">
               <p>Following {user.following.length}</p>
@@ -90,7 +88,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       </div>
       <div>
         <ImageList
-          height="h-72"
+          height="h-[56vh]"
           images={validImages}
           userId={userInfo ? parseJson(userInfo._id) : null}
         />

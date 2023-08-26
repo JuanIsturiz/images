@@ -33,7 +33,7 @@ export default async function Home() {
       <ImageList
         images={validImages}
         userId={userInfo ? parseJson(userInfo._id) : null}
-        height="h-[34rem]"
+        height="h-[86vh]"
       />
     </section>
   );

@@ -164,11 +164,12 @@ export async function getActivity(userId: string, following: string[]) {
         $in: following,
       },
     }).populate({
-      path: "User",
+      path: "author",
       model: User,
       select: "id username image",
     });
 
+    console.log({ images });
     // const usersFollowed = await User.find({
     //   followed: { $in: [userId] },
     // }).populate({ path: "Image", model: Image });
