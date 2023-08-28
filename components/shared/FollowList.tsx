@@ -10,11 +10,8 @@ interface FollowListProps {
   title: string;
 }
 
-import * as React from "react";
 import { Search } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
-
 import {
   Popover,
   PopoverContent,
@@ -24,10 +21,11 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Input } from "../ui/input";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 const FollowList: React.FC<FollowListProps> = ({ list, title }) => {
-  const [open, setOpen] = React.useState(false);
-  const [filter, setFilter] = React.useState("");
+  const [open, setOpen] = useState(false);
+  const [filter, setFilter] = useState("");
   const filteredList = list.filter((user) =>
     user.username.toLowerCase().includes(filter.toLowerCase())
   );

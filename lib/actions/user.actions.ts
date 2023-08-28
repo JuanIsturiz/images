@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { connectDB } from "../db";
 import User from "../models/user.model";
 import Image from "../models/image.model";
+import { FilterQuery } from "mongoose";
 
 export async function getUser(id: string) {
   try {
@@ -114,5 +115,38 @@ export async function getFollow(userId: string) {
     };
   } catch (error: any) {
     throw new Error(`Failed to get followers and followings: ${error.message}`);
+  }
+}
+
+interface GetUsersBySearchParams {
+  userId: string;
+  searchString?: string;
+  pageNumber?: number;
+  pageSize?: number;
+}
+
+export async function getUsersBySearch({
+  userId,
+  searchString = "",
+}: GetUsersBySearchParams) {
+  try {
+    connectDB();
+
+    const regex = new RegExp(searchString, "i");
+
+    const query: FilterQuery<typeof User> = {
+      id: { $ne: userId }, // Exclude the current user from the results.
+    };
+
+    if (searchString.trim() !== "") {
+      query.$or = [
+        { username: { $regex: regex } },
+        { name: { $regex: regex } },
+      ];
+    }
+
+    return await User.find(query);
+  } catch (error: any) {
+    throw new Error(`Failed to search: ${error.message}`);
   }
 }
