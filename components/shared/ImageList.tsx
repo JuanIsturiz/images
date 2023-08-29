@@ -30,7 +30,7 @@ const ImageList: React.FC<ImageListProps> = ({ images, userId, height }) => {
   return (
     <>
       <ScrollArea className={`${height} px-1 mb-1`}>
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-col items-center sm:items-start sm:flex-row sm:flex-wrap justify-center gap-4">
           {images?.map((image) => {
             return (
               <ImageCard

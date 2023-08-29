@@ -17,11 +17,11 @@ export default async function Home() {
   const validImages = images.map(validateImage);
 
   return (
-    <section className="px-1 my-3 flex-1">
+    <section className="px-1 my-3 md:flex-1">
       <ImageList
         images={validImages}
         userId={userInfo ? parseJson(userInfo._id) : null}
-        height="h-[86vh]"
+        height="h-[83vh] md:h-[74vh] lg:h-[86vh]"
       />
     </section>
   );

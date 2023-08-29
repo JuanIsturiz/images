@@ -66,7 +66,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
     <>
       <div
         key={image._id}
-        className="relative p-2 overflow-hidden rounded shadow-lg bg-zinc-100 dark:bg-zinc-900"
+        className="w-[90%] sm:w-auto relative p-2 overflow-hidden rounded shadow-lg bg-zinc-100 dark:bg-zinc-900"
       >
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
@@ -94,6 +94,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
           alt={image.title}
           width={220}
           height={220}
+          className="w-full sm:w-[220px]"
         />
         <div className="cursor-pointer absolute z-10 bottom-3 right-3 p-1.5 rounded-full bg-zinc-100 dark:bg-zinc-900">
           <Heart

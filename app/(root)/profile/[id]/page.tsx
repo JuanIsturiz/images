@@ -2,6 +2,7 @@ import FollowButton from "@/components/shared/FollowButton";
 import FollowList from "@/components/shared/FollowList";
 import ImageList from "@/components/shared/ImageList";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { getUserImagesById } from "@/lib/actions/image.actions";
 import { getFollow, getUser } from "@/lib/actions/user.actions";
 import { parseJson, validateFollowUser, validateImage } from "@/lib/utils";
@@ -46,8 +47,8 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <section className="flex-1 mt-2">
       <div>
-        <div className="relative w-full rounded bg-zinc-100 dark:bg-zinc-900 h-[20vh]">
-          <div className="absolute left-52 top-4 text-lg">
+        <div className="relative w-full rounded bg-zinc-100 dark:bg-zinc-900 h-[20vh] md:h-[18vh] lg:h-[20vh]">
+          <div className="absolute left-8 top-2 md:left-52 md:top-4 text-lg">
             <div className="flex gap-2 mb-2">
               <FollowList list={validFollowing} title="Following" />
               <FollowList list={validFollowers} title="Followers" />
@@ -61,12 +62,12 @@ export default async function Page({ params }: { params: { id: string } }) {
             alt={"User Profile Picture"}
             width={148}
             height={148}
-            className="absolute -bottom-16 left-10 rounded-full border-4 border-[background] dark:border-[background]"
+            className="absolute -bottom-12 md:-bottom-16 ml-2 md:left-10 rounded-full border-4 border-[background] dark:border-[background] w-24 md:w-[148px]"
           />
         </div>
-        <div className="mt-1 ml-52 mb-6">
-          <div className="flex items-center gap-2">
-            <h4 className="text-xl">@{user.username}</h4>
+        <div className="mt-1 ml-28 md:ml-52 mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+            <h4 className="sm:text-xl">@{user.username}</h4>
             <FollowButton
               clerkSigned={!!clerkUser}
               currentUserId={parseJson(userInfo._id)}
@@ -80,9 +81,9 @@ export default async function Page({ params }: { params: { id: string } }) {
           <p className="text-zinc-500 dark:text-zinc-400">{user.bio}</p>
         </div>
       </div>
-      <div>
+      <div className="mb-12 md:mb-0">
         <ImageList
-          height="h-[56vh]"
+          height="md:h-[46vh] lg:h-[56vh]"
           images={validImages}
           userId={userInfo ? parseJson(userInfo._id) : null}
         />

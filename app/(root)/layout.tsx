@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import TopBar from "@/components/shared/TopBar";
 import SideBar from "@/components/shared/SideBar";
 import { Toaster } from "@/components/ui/toaster";
+import BottomBar from "@/components/shared/BottomBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,12 +25,13 @@ export default function RootLayout({
       <body className={inter.className}>
         <ClerkProvider>
           <ThemeProvider attribute="class" defaultTheme="dark">
-            <main className="w-full max-w-7xl mx-auto px-2">
+            <main className="w-full max-w-7xl mx-auto lg:px-2">
               <TopBar />
-              <div className="flex gap-3">
+              <div className="flex flex-col lg:flex-row gap-3">
                 <SideBar />
                 {children}
               </div>
+              <BottomBar />
             </main>
             <Toaster />
           </ThemeProvider>

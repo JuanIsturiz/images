@@ -28,7 +28,7 @@ const SearchBar: React.FC<SearchBarProps> = () => {
 
   return (
     <div className="flex items-center gap-1.5 px-2 border rounded dark:border-zinc-800">
-      <Search />
+      <Search className="dark:text-zinc-400" />
       <Separator orientation="vertical" className="h-8" />
       <Input
         value={searchString}

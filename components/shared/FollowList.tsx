@@ -52,14 +52,13 @@ const FollowList: React.FC<FollowListProps> = ({ list, title }) => {
             onChange={(e) => setFilter(e.target.value)}
           />
         </div>
-
         {filter && filteredList.length === 0 && (
           <p className="text-lg text-center pt-2">No user found.</p>
         )}
         <ScrollArea className="p-1">
           <div className="flex flex-col gap-1">
             {filteredList.map((user) => (
-              <Link href={`/profile/${user._id}`}>
+              <Link key={user._id} href={`/profile/${user._id}`}>
                 <div
                   key={user._id}
                   className="cursor-pointer flex gap-2 items-center p-1 rounded hover:bg-zinc-100 dark:hover:bg-zinc-900"

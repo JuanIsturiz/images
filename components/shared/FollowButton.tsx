@@ -3,6 +3,7 @@
 import { followUser } from "@/lib/actions/user.actions";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import { UserCheck2, UserPlus2 } from "lucide-react";
 
 interface FollowButtonProps {
   onboarded: boolean;
@@ -37,11 +38,21 @@ const FollowButton: React.FC<FollowButtonProps> = ({
     <>
       {condition && (
         <Button
-          variant={"outline"}
-          className={`px-2 h-6 ${isFollowed && "opacity-80"}`}
+          className={"w-28 md:w-auto px-2 h-8 flex gap-1.5"}
+          variant={isFollowed ? "secondary" : "default"}
           onClick={() => void follow()}
         >
-          {isFollowed ? "Following" : "Follow"}
+          {isFollowed ? (
+            <>
+              <p>Following</p>
+              <UserCheck2 />
+            </>
+          ) : (
+            <>
+              <p>Follow</p>
+              <UserPlus2 />
+            </>
+          )}
         </Button>
       )}
     </>

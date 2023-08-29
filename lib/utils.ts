@@ -38,3 +38,18 @@ export function validateFollowUser(followUser: any) {
     image: followUser.image,
   };
 }
+
+export function validateUser(user: any) {
+  return {
+    _id: parseJson(user._id),
+    id: user.id,
+    username: user.username,
+    name: user.name,
+    image: user.image,
+    images: user.images.map(parseJson),
+    bio: user.bio,
+    followers: user.followers.map(parseJson),
+    following: user.following.map(parseJson),
+    onboarded: user.onboarded,
+  };
+}

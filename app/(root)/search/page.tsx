@@ -1,6 +1,9 @@
 import SearchBar from "@/components/shared/SearchBar";
+import UserProfileCard from "@/components/shared/UserProfileCard";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 import { getUser, getUsersBySearch } from "@/lib/actions/user.actions";
-import { parseJson } from "@/lib/utils";
+import { parseJson, validateUser } from "@/lib/utils";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
@@ -21,15 +24,35 @@ export default async function Page({
     // pageNumber: searchParams?.page ? +searchParams.page : 1,
     // pageSize: 25,
   });
-  console.log({ searchString: searchParams.q });
+  // console.log({ searchString: searchParams.q });
   return (
-    <section className="flex-1">
-      <h2>Search</h2>
-      <SearchBar />
+    <section className="flex-1 my-1">
+      <div className="max-w-2xl my-8 mx-auto">
+        <SearchBar />
+      </div>
       <div>
-        {result.map((res) => (
-          <p>{res.username}</p>
-        ))}
+        <ScrollArea className="h-[70vh]">
+          <div className="max-w-3xl mx-auto">
+            <Separator />
+            {[
+              // ...result.map(validateUser),
+              // ...result.map(validateUser),
+              ...result.map(validateUser),
+            ].map((user) => (
+              <>
+                <UserProfileCard
+                  user={user}
+                  currentUser={{
+                    _id: parseJson(userInfo._id),
+                    onboarded: userInfo.onboarded,
+                  }}
+                  isClerkUser={!!user}
+                />
+                <Separator />
+              </>
+            ))}
+          </div>
+        </ScrollArea>
       </div>
     </section>
   );
