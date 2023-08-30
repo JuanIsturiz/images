@@ -26,9 +26,13 @@ import { Loader2 } from "lucide-react";
 
 interface CreateImageFormProps {
   userId: string;
+  followers: string[];
 }
 
-const CreateImageForm: React.FC<CreateImageFormProps> = ({ userId }) => {
+const CreateImageForm: React.FC<CreateImageFormProps> = ({
+  userId,
+  followers,
+}) => {
   const pathname = usePathname();
   const router = useRouter();
   const { toast } = useToast();
@@ -94,6 +98,7 @@ const CreateImageForm: React.FC<CreateImageFormProps> = ({ userId }) => {
     }
     await createImage({
       author: userId,
+      followers,
       imageUrl: uploadedImage,
       title: values.title,
       path: pathname,

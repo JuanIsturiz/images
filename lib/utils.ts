@@ -23,6 +23,17 @@ export function validateImage(img: any) {
       username: img.author.username,
       image: img.author.image,
     },
+    comments: img.comments.map((comment: any) => ({
+      _id: parseJson(comment._id),
+      content: comment.content,
+      createdAt: comment.createdAt,
+      author: {
+        _id: parseJson(comment.author._id),
+        id: comment.author.id,
+        username: comment.author.username,
+        image: comment.author.image,
+      },
+    })),
     imageUrl: img.imageUrl,
     title: img.title,
     createdAt: img.createdAt,
@@ -51,5 +62,14 @@ export function validateUser(user: any) {
     followers: user.followers.map(parseJson),
     following: user.following.map(parseJson),
     onboarded: user.onboarded,
+  };
+}
+
+export function validateComment(comment: any) {
+  return {
+    _id: parseJson(comment._id) as string,
+    content: comment.content as string,
+    author: parseJson(comment._id) as string,
+    image: parseJson(comment.image) as string,
   };
 }

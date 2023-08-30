@@ -22,6 +22,12 @@ const UserSchema = new mongoose.Schema({
       ref: "Image",
     },
   ],
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Comment",
+    },
+  ],
   following: [
     {
       type: mongoose.Schema.Types.ObjectId,

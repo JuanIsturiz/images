@@ -5,9 +5,12 @@ import { connectDB } from "../db";
 import Image from "../models/image.model";
 import User from "../models/user.model";
 import { utapi } from "uploadthing/server";
+import { createActivity, deleteActivity } from "./activity.actions";
+import Comment from "../models/comment.model";
 
 interface CreateImageParams {
   author: string;
+  followers: string[];
   imageUrl: string;
   title: string;
   path: string;
@@ -15,6 +18,7 @@ interface CreateImageParams {
 
 export async function createImage({
   author,
+  followers,
   imageUrl,
   title,
   path,
@@ -27,9 +31,15 @@ export async function createImage({
       title,
     });
 
-    // Update user model
     await User.findByIdAndUpdate(author, {
       $push: { images: image._id },
+    });
+
+    await createActivity({
+      type: "post",
+      fromUser: author,
+      toUser: followers,
+      image: image._id,
     });
 
     revalidatePath(path);
@@ -78,7 +88,16 @@ export async function getImages() {
       .sort({
         createdAt: "desc",
       })
-      .populate({ path: "author", model: User, select: "id image username" });
+      .populate({ path: "author", model: User, select: "id image username" })
+      .populate({
+        path: "comments",
+        model: Comment,
+        populate: {
+          path: "author",
+          model: User,
+          select: "id image username",
+        },
+      });
     return images;
   } catch (error: any) {
     throw new Error(`Failed to fetch images: ${error.message}`);
@@ -94,7 +113,16 @@ export async function getUserImagesById(userId: string) {
       .sort({
         createdAt: "desc",
       })
-      .populate({ path: "author", model: User, select: "id image username" });
+      .populate({ path: "author", model: User, select: "id image username" })
+      .populate({
+        path: "comments",
+        model: Comment,
+        populate: {
+          path: "author",
+          model: User,
+          select: "id image username",
+        },
+      });
     return images;
   } catch (error: any) {
     throw new Error(`Failed to fetch images: ${error.message}`);
@@ -105,6 +133,7 @@ export async function favImage(
   isLiked: boolean,
   imageId: string,
   userId: string,
+  author: string,
   path: string
 ) {
   try {
@@ -115,11 +144,23 @@ export async function favImage(
           likedBy: userId,
         },
       });
+      await createActivity({
+        type: "like",
+        fromUser: userId,
+        toUser: [author],
+        image: imageId,
+      });
     } else {
       await Image.findByIdAndUpdate(imageId, {
         $pull: {
           likedBy: userId,
         },
+      });
+      await deleteActivity({
+        type: "like",
+        fromUser: userId,
+        toUser: author,
+        image: imageId,
       });
     }
     revalidatePath(path);
@@ -146,6 +187,11 @@ export async function deleteImage(
         },
       });
       await Image.findByIdAndDelete(imageId);
+
+      await deleteActivity({
+        type: "post",
+        image: imageId,
+      });
       revalidatePath(path);
     }
 
@@ -155,7 +201,7 @@ export async function deleteImage(
   }
 }
 
-export async function getActivity(userId: string, following: string[]) {
+export async function getOldActivity(userId: string, following: string[]) {
   try {
     connectDB();
 

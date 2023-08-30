@@ -3,8 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { connectDB } from "../db";
 import User from "../models/user.model";
-import Image from "../models/image.model";
 import { FilterQuery } from "mongoose";
+import { createActivity, deleteActivity } from "./activity.actions";
 
 export async function getUser(id: string) {
   try {
@@ -66,26 +66,42 @@ export async function followUser(
     connectDB();
 
     if (!isFollowed) {
+      // update follower
       await User.findByIdAndUpdate(userId, {
         $push: {
           following: otherUserId,
         },
       });
+      // update followed
       await User.findByIdAndUpdate(otherUserId, {
         $push: {
           followers: userId,
         },
+      });
+      // create follow activity
+      await createActivity({
+        type: "follow",
+        fromUser: userId,
+        toUser: [otherUserId],
       });
     } else {
+      // update follower
       await User.findByIdAndUpdate(userId, {
         $pull: {
           following: otherUserId,
         },
       });
+      // update followed
       await User.findByIdAndUpdate(otherUserId, {
         $pull: {
           followers: userId,
         },
+      });
+      // delete follow activity
+      await deleteActivity({
+        type: "follow",
+        fromUser: userId,
+        toUser: otherUserId,
       });
     }
     revalidatePath(path);

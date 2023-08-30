@@ -2,7 +2,6 @@ import FollowButton from "@/components/shared/FollowButton";
 import FollowList from "@/components/shared/FollowList";
 import ImageList from "@/components/shared/ImageList";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { getUserImagesById } from "@/lib/actions/image.actions";
 import { getFollow, getUser } from "@/lib/actions/user.actions";
 import { parseJson, validateFollowUser, validateImage } from "@/lib/utils";

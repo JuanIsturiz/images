@@ -8,6 +8,7 @@ interface Image {
     username: string;
     image: string;
   };
+  comments: Comment[];
   likedBy: string[];
   createdAt: string;
 }
@@ -23,4 +24,16 @@ interface User {
   following: string[];
   images: string[];
   onboarded: boolean;
+}
+
+interface Comment {
+  _id: string;
+  content: string;
+  author: {
+    _id: string;
+    id: string;
+    username: string;
+    image: string;
+  };
+  image: string;
 }

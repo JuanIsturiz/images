@@ -9,10 +9,12 @@ const ActivitySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  toUser: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
+  toUser: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
   image: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Image",
@@ -29,7 +31,7 @@ const ActivitySchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
     index: {
-      expires: "30s",
+      expires: "7d",
     },
   },
 });

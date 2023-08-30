@@ -23,6 +23,7 @@ interface ImageCardProps {
     isLiked: boolean,
     imageId: string,
     userId: string | null,
+    author: string,
     path: string
   ) => void;
 }
@@ -103,7 +104,15 @@ const ImageCard: React.FC<ImageCardProps> = ({
                 ? " text-red-600 hover:text-zinc-500"
                 : "hover:text-red-600"
             }`}
-            onClick={() => void onLike(isLiked, image._id, userId, pathname)}
+            onClick={() =>
+              void onLike(
+                isLiked,
+                image._id,
+                userId,
+                image.author._id,
+                pathname
+              )
+            }
           />
         </div>
       </div>
@@ -111,8 +120,11 @@ const ImageCard: React.FC<ImageCardProps> = ({
         isOpen={isOpen}
         image={image}
         closeDialog={() => setIsOpen(false)}
-        onLike={() => void onLike(isLiked, image._id, userId, pathname)}
+        onLike={() =>
+          void onLike(isLiked, image._id, userId, image.author._id, pathname)
+        }
         isLiked={isLiked}
+        userId={userId ?? ""}
       />
     </>
   );

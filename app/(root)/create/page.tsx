@@ -14,7 +14,10 @@ export default async function Home() {
   return (
     <section className="px-1 my-3 flex-1">
       <h1>New Image</h1>
-      <CreateImageForm userId={parseJson(userInfo._id)} />
+      <CreateImageForm
+        userId={parseJson(userInfo._id)}
+        followers={userInfo.followers.map(parseJson)}
+      />
     </section>
   );
 }

@@ -58,7 +58,7 @@ const FollowList: React.FC<FollowListProps> = ({ list, title }) => {
         <ScrollArea className="p-1">
           <div className="flex flex-col gap-1">
             {filteredList.map((user) => (
-              <Link key={user._id} href={`/profile/${user._id}`}>
+              <Link key={user._id} href={`/profile/${user.id}`}>
                 <div
                   key={user._id}
                   className="cursor-pointer flex gap-2 items-center p-1 rounded hover:bg-zinc-100 dark:hover:bg-zinc-900"

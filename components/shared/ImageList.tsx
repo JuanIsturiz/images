@@ -18,13 +18,14 @@ const ImageList: React.FC<ImageListProps> = ({ images, userId, height }) => {
     isLiked: boolean,
     imageId: string,
     userId: string | null,
+    author: string,
     path: string
   ) {
     if (!userId) {
       router.push("/sign-in");
       return;
     }
-    await favImage(isLiked, imageId, userId, path);
+    await favImage(isLiked, imageId, userId, author, path);
   }
 
   return (
