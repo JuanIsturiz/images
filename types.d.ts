@@ -36,4 +36,15 @@ interface Comment {
     image: string;
   };
   image: string;
+  createdAt: string;
+}
+
+interface Activity {
+  _id: string;
+  type: string;
+  fromUser: string;
+  toUser: string[];
+  image?: string;
+  comment?: string;
+  createdAt: string;
 }

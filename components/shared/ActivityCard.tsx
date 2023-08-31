@@ -74,6 +74,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
         closeDialog={() => setIsOpen(false)}
         onLike={() => void onLike(isLiked, image._id, userId, pathname)}
         isLiked={isLiked}
+        userId={userId ?? ""}
       />
     </>
   );

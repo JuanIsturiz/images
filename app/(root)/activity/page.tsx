@@ -1,6 +1,5 @@
 import { getUser } from "@/lib/actions/user.actions";
-import { getOldActivity } from "@/lib/actions/image.actions";
-import { parseJson, validateImage } from "@/lib/utils";
+import { parseJson } from "@/lib/utils";
 import { currentUser } from "@clerk/nextjs";
 import ActivityList from "@/components/shared/ActivityList";
 import { getActivity } from "@/lib/actions/activity.actions";
@@ -16,10 +15,8 @@ export default async function Page() {
 
   return (
     <section className="px-1 my-3 flex-1">
-      {/* <ActivityList
-        activities={}
-        userId={parseJson(userInfo._id)}
-      /> */}
+      <h3>activity</h3>
+      {/* <ActivityList activities={activities} userId={parseJson(userInfo._id)} /> */}
     </section>
   );
 }
