@@ -69,7 +69,12 @@ const DetailsDialog: React.FC<{
                 imageOwner={image.author._id}
               />
             )}
-            <CommentList comments={image.comments} />
+            <CommentList
+              comments={image.comments}
+              userId={userId}
+              imageId={image._id}
+              imageOwner={image.author._id}
+            />
           </div>
         </div>
       </DialogContent>

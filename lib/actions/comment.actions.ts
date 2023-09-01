@@ -83,7 +83,7 @@ export async function deleteComment({
 }) {
   try {
     connectDB();
-    await Image.findByIdAndUpdate(userId, {
+    await User.findByIdAndUpdate(userId, {
       $pull: {
         comments: commentId,
       },

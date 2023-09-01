@@ -14,6 +14,7 @@ import {
 import { Input } from "../ui/input";
 import { createComment } from "@/lib/actions/comment.actions";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 interface NewCommentWizardProps {
   userId: string;
@@ -27,11 +28,14 @@ const NewCommentWizard: React.FC<NewCommentWizardProps> = ({
   imageOwner,
 }) => {
   const pathname = usePathname();
+  const [isSubmited, setIsSubmited] = useState(false);
   const form = useForm<z.infer<typeof CommentValidation>>({
     resolver: zodResolver(CommentValidation),
   });
 
   async function onSubmit(values: z.infer<typeof CommentValidation>) {
+    setIsSubmited(true);
+    if (isSubmited) return;
     const res = await createComment({
       author: userId,
       toUser: imageOwner,
@@ -45,6 +49,7 @@ const NewCommentWizard: React.FC<NewCommentWizardProps> = ({
         content: "",
       });
     }
+    setIsSubmited(false);
   }
 
   return (
@@ -57,6 +62,7 @@ const NewCommentWizard: React.FC<NewCommentWizardProps> = ({
             <FormItem className="w-full">
               <FormControl>
                 <Input
+                  disabled={isSubmited}
                   type="text"
                   placeholder="Add a new comment here..."
                   {...field}

@@ -6,6 +6,7 @@ import { getUser, getUsersBySearch } from "@/lib/actions/user.actions";
 import { parseJson, validateUser } from "@/lib/utils";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+import { Fragment } from "react";
 
 export default async function Page({
   searchParams,
@@ -34,12 +35,8 @@ export default async function Page({
         <ScrollArea className="h-[70vh]">
           <div className="max-w-3xl mx-auto">
             <Separator />
-            {[
-              // ...result.map(validateUser),
-              // ...result.map(validateUser),
-              ...result.map(validateUser),
-            ].map((user) => (
-              <>
+            {result.map(validateUser).map((user) => (
+              <Fragment key={user._id}>
                 <UserProfileCard
                   user={user}
                   currentUser={{
@@ -49,7 +46,7 @@ export default async function Page({
                   isClerkUser={!!user}
                 />
                 <Separator />
-              </>
+              </Fragment>
             ))}
           </div>
         </ScrollArea>

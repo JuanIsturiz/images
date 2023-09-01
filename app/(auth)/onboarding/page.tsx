@@ -1,11 +1,17 @@
 import OnboardingForm from "@/components/forms/OnboardingForm";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { getUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function Page() {
   const user = await currentUser();
+
+  const userInfo = await getUser(user?.id ?? "");
+
+  if (userInfo.onboarded) redirect("/");
 
   const userProp = {
     id: user?.id ?? "",

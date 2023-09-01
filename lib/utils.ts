@@ -67,9 +67,27 @@ export function validateUser(user: any) {
 
 export function validateComment(comment: any) {
   return {
-    _id: parseJson(comment._id) as string,
-    content: comment.content as string,
-    author: parseJson(comment._id) as string,
-    image: parseJson(comment.image) as string,
+    _id: parseJson(comment._id),
+    content: comment.content,
+    author: parseJson(comment._id),
+    image: parseJson(comment.image),
+    createdAt: comment.createdAt,
+  };
+}
+
+export function validateActivity(act: any) {
+  return {
+    _id: parseJson(act._id),
+    type: act.type,
+    fromUser: {
+      _id: parseJson(act.fromUser._id),
+      id: act.fromUser.id,
+      username: act.fromUser.username,
+      image: act.fromUser.image,
+    },
+    toUser: act.toUser.map(parseJson),
+    image: act?.image ? validateImage(act.image) : undefined,
+    comment: act?.comment ? validateComment(act.comment) : undefined,
+    createdAt: act.createdAt,
   };
 }

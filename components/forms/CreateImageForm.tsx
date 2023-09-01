@@ -74,7 +74,6 @@ const CreateImageForm: React.FC<CreateImageFormProps> = ({
 
   async function onSubmit(values: z.infer<typeof ImageValidation>) {
     if (isSubmited) return;
-    console.log("submit");
     setIsSubmited(true);
     if (!image) {
       setIsNoImage(true);

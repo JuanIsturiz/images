@@ -23,6 +23,14 @@ export async function getActivity(userId: string) {
       .populate({
         path: "image",
         model: Image,
+        populate: [
+          { path: "author", model: User },
+          {
+            path: "comments",
+            model: Comment,
+            populate: { path: "author", model: User },
+          },
+        ],
       })
       .populate({
         path: "comment",

@@ -24,6 +24,7 @@ import { isBase64Image } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
 import { updateUser } from "@/lib/actions/user.actions";
 import { useToast } from "../ui/use-toast";
+import { Loader2 } from "lucide-react";
 
 interface User {
   id: string;
@@ -41,6 +42,8 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ user }) => {
   const pathname = usePathname();
 
   const { toast } = useToast();
+
+  const [isSubmited, setIsSubmited] = useState(false);
 
   const [files, setFiles] = useState<File[]>([]);
   const { startUpload } = useUploadThing("media");
@@ -81,8 +84,7 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ user }) => {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof UserValidation>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+    setIsSubmited(true);
 
     const blob = values.profile_photo;
     const hasImageChanged = isBase64Image(blob);
@@ -116,6 +118,7 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ user }) => {
     } else {
       router.push("/");
     }
+    setIsSubmited(false);
   }
   return (
     <Form {...form}>
@@ -218,7 +221,8 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ user }) => {
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit">
+        <Button className="w-full" type="submit" disabled={isSubmited}>
+          {isSubmited && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Submit
         </Button>
       </form>
