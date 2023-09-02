@@ -5,12 +5,11 @@ import { useRouter, usePathname } from "next/navigation";
 import ImageCard from "./ImageCard";
 
 interface ImageListProps {
-  height: string;
   images: Image[] | null;
   userId: string | null;
 }
 
-const ImageList: React.FC<ImageListProps> = ({ images, userId, height }) => {
+const ImageList: React.FC<ImageListProps> = ({ images, userId }) => {
   const pathname = usePathname();
   const router = useRouter();
   async function likeImage(

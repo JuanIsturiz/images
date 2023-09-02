@@ -144,9 +144,13 @@ interface GetUsersBySearchParams {
 export async function getUsersBySearch({
   userId,
   searchString = "",
+  pageNumber = 1,
+  pageSize = 20,
 }: GetUsersBySearchParams) {
   try {
     connectDB();
+
+    const skipAmount = (pageNumber - 1) * pageSize;
 
     const regex = new RegExp(searchString, "i");
 
@@ -160,8 +164,10 @@ export async function getUsersBySearch({
         { name: { $regex: regex } },
       ];
     }
-
-    return await User.find(query);
+    const users = await User.find(query).skip(skipAmount).limit(pageSize);
+    const totalUsersCount = await User.countDocuments(query);
+    const isNext = totalUsersCount > skipAmount + users.length;
+    return { users, isNext };
   } catch (error: any) {
     throw new Error(`Failed to search: ${error.message}`);
   }

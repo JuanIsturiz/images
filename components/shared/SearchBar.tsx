@@ -33,7 +33,7 @@ const SearchBar: React.FC<SearchBarProps> = () => {
       <Input
         value={searchString}
         onChange={(e) => setSearchString(e.target.value)}
-        placeholder="Search..."
+        placeholder="Search creators..."
         className="!bg-transparent border-none pl-0 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
       />
     </div>

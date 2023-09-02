@@ -124,7 +124,7 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ user }) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-1/2 mx-auto mb-2 p-4 dark:bg-zinc-900 rounded border shadow-lg dark:border-zinc-800"
+        className="w-full sm:w-11/12 md:w-5/6 lg:w-1/2 mx-auto mb-2 p-4 dark:bg-zinc-900 rounded border shadow-lg dark:border-zinc-800"
       >
         <FormField
           control={form.control}

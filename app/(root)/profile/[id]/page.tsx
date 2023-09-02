@@ -46,7 +46,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <section className="mt-[44px] px-1 sm:px-1 sm:mb-20 lg:mb-2 sm:mx-auto lg:ml-52 lg:mt-14">
       <div className="fixed z-20 w-[98%] lg:w-[70rem] bg-[background] pb-2 lg:pb-0">
-        <div className="relative w-full rounded bg-zinc-100 dark:bg-zinc-900 h-40 md:h-[18vh] lg:h-[20vh]">
+        <div className="relative w-full rounded bg-zinc-100 dark:bg-zinc-950 h-40 md:h-[18vh] lg:h-[20vh]">
           <div className="absolute top-2 md:left-52 md:top-4 text-lg">
             <div className="flex gap-2 md:mb-2">
               <FollowList list={validFollowing} title="Following" />
@@ -104,7 +104,6 @@ export default async function Page({ params }: { params: { id: string } }) {
       </div>
       <div className="mt-44 md:mt-52 mb-14 sm:mb-0">
         <ImageList
-          height="md:h-[46vh] lg:h-[56vh]"
           images={validImages}
           userId={userInfo ? parseJson(userInfo._id) : null}
         />

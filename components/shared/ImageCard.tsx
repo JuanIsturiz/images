@@ -67,7 +67,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
     <>
       <div
         key={image._id}
-        className="sm:w-auto relative p-2 overflow-hidden rounded shadow-lg bg-zinc-100 dark:bg-zinc-900"
+        className="sm:w-auto relative p-2 overflow-hidden rounded shadow-lg bg-zinc-100 dark:bg-zinc-950"
       >
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
@@ -98,7 +98,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
           className="w-full sm:w-[280px] sm:h-[280px] md:w-[190px]
 md:h-[190px] lg:w-[240px] lg:h-[240px]"
         />
-        <div className="cursor-pointer absolute z-10 bottom-3 right-3 p-1.5 rounded-full bg-zinc-100 dark:bg-zinc-900">
+        <div className="cursor-pointer absolute z-10 bottom-3 right-3 p-1.5 rounded-full bg-zinc-100 dark:bg-zinc-950">
           <Heart
             className={`transition-colors duration-100 ${
               isLiked

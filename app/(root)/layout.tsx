@@ -27,7 +27,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <ClerkProvider>
           <ThemeProvider attribute="class" defaultTheme="dark">
-            <ScrollArea className="h-screen">
+            <ScrollArea className="h-auto sm:h-screen">
               <main className="relative">
                 <div className="hidden z-40 left-2 top-2 md:fixed md:block lg:hidden">
                   <SideSheet />

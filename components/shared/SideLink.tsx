@@ -41,8 +41,8 @@ const SideLink: React.FC<SideLinkProps> = ({ link, userInfo }) => {
         <div
           className={`flex items-center gap-3 p-2 rounded transition-colors duration-150 cursor-pointer ${
             isActive
-              ? "bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700"
-              : "hover:bg-zinc-200 dark:hover:bg-zinc-800"
+              ? "bg-zinc-200 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              : "hover:bg-zinc-200 dark:hover:bg-zinc-900"
           } `}
         >
           <Image

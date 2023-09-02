@@ -1,3 +1,4 @@
+import Pagination from "@/components/shared/Pagination";
 import SearchBar from "@/components/shared/SearchBar";
 import UserProfileCard from "@/components/shared/UserProfileCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -22,12 +23,11 @@ export default async function Page({
   const result = await getUsersBySearch({
     userId: parseJson(userInfo._id),
     searchString: searchParams.q,
-    // pageNumber: searchParams?.page ? +searchParams.page : 1,
-    // pageSize: 25,
+    pageNumber: searchParams?.page ? +searchParams.page : 1,
+    pageSize: 25,
   });
-  // console.log({ searchString: searchParams.q });
   return (
-    <section className="flex-1 my-1">
+    <section className="w-full mt-14 sm:px-1 mb-14 sm:mb-20 lg:mb-2 lg:ml-52">
       <div className="max-w-2xl my-8 mx-auto">
         <SearchBar />
       </div>
@@ -35,21 +35,34 @@ export default async function Page({
         <ScrollArea className="h-[70vh]">
           <div className="max-w-3xl mx-auto">
             <Separator />
-            {result.map(validateUser).map((user) => (
-              <Fragment key={user._id}>
-                <UserProfileCard
-                  user={user}
-                  currentUser={{
-                    _id: parseJson(userInfo._id),
-                    onboarded: userInfo.onboarded,
-                  }}
-                  isClerkUser={!!user}
-                />
-                <Separator />
-              </Fragment>
-            ))}
+            {result.users.length ? (
+              result.users.map(validateUser).map((user) => (
+                <Fragment key={user._id}>
+                  <UserProfileCard
+                    user={user}
+                    currentUser={{
+                      _id: parseJson(userInfo._id),
+                      onboarded: userInfo.onboarded,
+                    }}
+                    isClerkUser={!!user}
+                  />
+                  <Separator />
+                </Fragment>
+              ))
+            ) : (
+              <h1 className="text-center text-2xl opacity-70 my-2">
+                No user found.
+              </h1>
+            )}
           </div>
         </ScrollArea>
+      </div>
+      <div>
+        <Pagination
+          path="search"
+          pageNumber={searchParams?.page ? +searchParams.page : 1}
+          isNext={result.isNext}
+        />
       </div>
     </section>
   );

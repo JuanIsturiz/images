@@ -21,7 +21,7 @@ export default async function Page() {
   };
 
   return (
-    <section>
+    <section className="mt-14">
       <div className="my-4">
         <h2 className="text-2xl text-center font-medium">Onboarding</h2>
         <h2 className="text-lg text-center text-zinc-600 dark:text-zinc-400">

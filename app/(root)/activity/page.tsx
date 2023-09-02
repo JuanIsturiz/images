@@ -14,7 +14,7 @@ export default async function Page() {
   const validActivities = activities.map(validateActivity);
 
   return (
-    <section className="px-1 my-3 flex-1">
+    <section className="w-full mt-14 sm:px-1 mb-14 sm:mb-20 lg:mb-2 lg:ml-52">
       <ActivityList
         activities={validActivities}
         userId={parseJson(userInfo._id)}

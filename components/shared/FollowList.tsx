@@ -22,6 +22,7 @@ import { Input } from "../ui/input";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { Separator } from "../ui/separator";
 
 const FollowList: React.FC<FollowListProps> = ({ list, title }) => {
   const [open, setOpen] = useState(false);
@@ -31,19 +32,25 @@ const FollowList: React.FC<FollowListProps> = ({ list, title }) => {
   );
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover
+      open={open}
+      onOpenChange={() => {
+        setOpen((prev) => !prev);
+        setFilter("");
+      }}
+    >
       <PopoverTrigger asChild>
         <Button
           size={"sm"}
           variant="ghost"
           aria-expanded={open}
-          className="text-left text-lg w-28 px-0 hover:bg-zinc-200 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
+          className="text-left text-lg w-28 px-0 hover:bg-zinc-200 dark:hover:bg-zinc-900 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
         >
           {list.length} {title}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
-        <div className="flex gap-1 items-center border-b opacity-60 px-1">
+        <div className="flex gap-1 items-center opacity-60 px-1">
           <Search size={20} />
           <Input
             placeholder="Search user..."
@@ -52,6 +59,7 @@ const FollowList: React.FC<FollowListProps> = ({ list, title }) => {
             onChange={(e) => setFilter(e.target.value)}
           />
         </div>
+        <Separator />
         {filter && filteredList.length === 0 && (
           <p className="text-lg text-center pt-2">No user found.</p>
         )}

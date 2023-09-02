@@ -17,7 +17,7 @@ async function SideBar() {
 
   return (
     <section>
-      <div className="hidden fixed mt-14 left-2 w-52 lg:flex flex-col justify-center gap-2 my-2 px-4 py-2 bg-zinc-100 rounded dark:bg-zinc-900">
+      <div className="hidden fixed mt-14 left-2 w-52 lg:flex flex-col justify-center gap-2 my-2 px-4 py-2 bg-zinc-100 rounded dark:bg-zinc-950">
         {sideLinks.map((link) => (
           <SideLink key={link.route} link={link} userInfo={userInfo} />
         ))}

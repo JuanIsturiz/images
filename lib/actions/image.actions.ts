@@ -7,6 +7,7 @@ import User from "../models/user.model";
 import { utapi } from "uploadthing/server";
 import { createActivity, deleteActivity } from "./activity.actions";
 import Comment from "../models/comment.model";
+import { validateImage } from "../utils";
 
 interface CreateImageParams {
   author: string;
@@ -48,46 +49,17 @@ export async function createImage({
   }
 }
 
-// const skipAmount = (pageNumber - 1) * pageSize;
-
-// // fetch the posts that have no parents (top-level threads...)
-// const postsQuery = Thread.find({
-//   parentId: {
-//     $in: [null, undefined],
-//   },
-// })
-//   .sort({ createdAt: "desc" })
-//   .skip(skipAmount)
-//   .limit(pageSize)
-//   .populate({ path: "author", model: User })
-//   .populate({
-//     path: "children",
-//     populate: {
-//       path: "author",
-//       model: User,
-//       select: "_id name parentId image",
-//     },
-//   });
-
-// const totalPostsCount = await Thread.countDocuments({
-//   parentId: {
-//     $in: [null, undefined],
-//   },
-// });
-
-// const posts = await postsQuery.exec();
-
-// const isNext = totalPostsCount > skipAmount + posts.length;
-
-// return { posts, isNext };
-
-export async function getImages() {
+export async function getImages(page: number, pageSize: number) {
   try {
     connectDB();
+    const skipAmount = (page - 1) * pageSize;
+
     const images = await Image.find()
       .sort({
         createdAt: "desc",
       })
+      .skip(skipAmount)
+      .limit(pageSize)
       .populate({ path: "author", model: User, select: "id image username" })
       .populate({
         path: "comments",
@@ -98,7 +70,14 @@ export async function getImages() {
           select: "id image username",
         },
       });
-    return images;
+
+    const totalImageCount = await Image.countDocuments();
+
+    const isNext = totalImageCount > skipAmount + images.length;
+
+    const validImages = images.map(validateImage);
+
+    return { data: validImages, isNext };
   } catch (error: any) {
     throw new Error(`Failed to fetch images: ${error.message}`);
   }

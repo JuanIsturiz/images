@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import TopBar from "@/components/shared/TopBar";
 import { Image } from "lucide-react";
 import { Toaster } from "@/components/ui/toaster";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,11 +25,15 @@ export default function AuthLayout({
       <body className={inter.className}>
         <ClerkProvider>
           <ThemeProvider attribute="class" defaultTheme="dark">
-            <div className="w-full max-w-7xl mx-auto px-2">
-              <TopBar />
-              <div className="mt-2">{children}</div>
-            </div>
-            <Toaster />
+            <ScrollArea className="h-auto sm:h-screen">
+              <main className="relative">
+                <TopBar />
+                <div className="w-full max-w-7xl mx-auto px-2">
+                  <div className="relative">{children}</div>
+                </div>
+                <Toaster />
+              </main>
+            </ScrollArea>
           </ThemeProvider>
         </ClerkProvider>
       </body>

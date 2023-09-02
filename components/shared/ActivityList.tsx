@@ -28,7 +28,7 @@ const ActivityList: React.FC<ActivityListProps> = ({ activities, userId }) => {
   }
 
   return (
-    <ScrollArea className="h-[80vh] px-1 mb-1">
+    <div className="w-full px-1 mb-1">
       {activities?.map((activity) => (
         <ActivityCard
           key={activity._id}
@@ -38,7 +38,7 @@ const ActivityList: React.FC<ActivityListProps> = ({ activities, userId }) => {
           onLike={likeImage}
         />
       ))}
-    </ScrollArea>
+    </div>
   );
 };
 

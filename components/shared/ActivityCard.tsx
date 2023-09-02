@@ -32,7 +32,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <div className="h-28 max-w-3xl flex justify-between mx-auto mb-2 p-2 shadow-lg rounded dark:bg-zinc-900">
+      <div className="h-28 max-w-3xl flex justify-between mx-auto mb-2 p-2 shadow-lg border dark:border-zinc-950 rounded">
         <div>
           <div className="flex gap-1.5 items-center hover:underline">
             <Image
@@ -54,12 +54,14 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
               {activity.type === "post" && "Posted an image "}
               {activity.type === "comment" && "Commented your image "}
               {activity.type === "follow" && "Followed you "}
-              <span className="text-lg opacity-60">
+              <span className="text-lg opacity-80 dark:opacity-60">
                 {dayjs(activity.createdAt).fromNow()}.
               </span>
             </p>
             {activity.type === "comment" && (
-              <p className="text-md opacity-80">{activity.comment?.content}</p>
+              <p className="text-md opacity-80">
+                "{activity.comment?.content}"
+              </p>
             )}
           </div>
         </div>
