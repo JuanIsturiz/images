@@ -16,7 +16,7 @@ const DetailsDialog: React.FC<{
 }> = ({ closeDialog, isOpen, image, onLike, isLiked, userId }) => {
   return (
     <Dialog open={isOpen} onOpenChange={closeDialog}>
-      <DialogContent className="p-3 sm:max-w-4xl">
+      <DialogContent className="p-3 w-[98%] h-[96vh] sm:w-auto sm:max-w-4xl overflow-hidden">
         <div className="flex flex-col gap-2 md:gap-3 md:flex-row">
           <div className="flex-1">
             <DialogHeader className="mb-2">
@@ -61,7 +61,7 @@ const DetailsDialog: React.FC<{
             <p className="ml-1 text-lg dark:text-zinc-300">{image.title}</p>
           </div>
           <div className="flex-1">
-            <h4 className="mt-8 mb-2 text-lg">Comments</h4>
+            <h4 className="md:mt-8 mb-2 text-lg">Comments</h4>
             {userId && (
               <NewCommentWizard
                 userId={userId}

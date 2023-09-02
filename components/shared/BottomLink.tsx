@@ -52,7 +52,7 @@ const BottomLink: React.FC<BottomLinkProps> = ({ link, userInfo }) => {
             height={20}
             className={"invert-0 dark:invert"}
           />
-          <p className="hidden md:block text-sm">{label.split(" ")[0]}</p>
+          <p className="hidden sm:block text-sm">{label.split(" ")[0]}</p>
         </div>
       </Link>
     </div>

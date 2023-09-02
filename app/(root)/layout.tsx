@@ -7,6 +7,8 @@ import TopBar from "@/components/shared/TopBar";
 import SideBar from "@/components/shared/SideBar";
 import { Toaster } from "@/components/ui/toaster";
 import BottomBar from "@/components/shared/BottomBar";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import SideSheet from "@/components/shared/SideSheet";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,14 +27,19 @@ export default function RootLayout({
       <body className={inter.className}>
         <ClerkProvider>
           <ThemeProvider attribute="class" defaultTheme="dark">
-            <main className="w-full max-w-7xl mx-auto lg:px-2">
-              <TopBar />
-              <div className="flex flex-col lg:flex-row gap-3">
-                <SideBar />
-                {children}
-              </div>
-              <BottomBar />
-            </main>
+            <ScrollArea className="h-screen">
+              <main className="relative">
+                <div className="hidden z-40 left-2 top-2 md:fixed md:block lg:hidden">
+                  <SideSheet />
+                </div>
+                <TopBar />
+                <div className="relative flex flex-col lg:flex-row gap-3">
+                  <SideBar />
+                  {children}
+                </div>
+                <BottomBar />
+              </main>
+            </ScrollArea>
             <Toaster />
           </ThemeProvider>
         </ClerkProvider>

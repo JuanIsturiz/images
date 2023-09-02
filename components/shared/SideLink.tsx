@@ -39,7 +39,7 @@ const SideLink: React.FC<SideLinkProps> = ({ link, userInfo }) => {
         }
       >
         <div
-          className={`flex items-center gap-3 p-2 rounded transition-colors duration-100 cursor-pointer ${
+          className={`flex items-center gap-3 p-2 rounded transition-colors duration-150 cursor-pointer ${
             isActive
               ? "bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700"
               : "hover:bg-zinc-200 dark:hover:bg-zinc-800"
@@ -55,7 +55,7 @@ const SideLink: React.FC<SideLinkProps> = ({ link, userInfo }) => {
           <p className="text-lg">{label}</p>
         </div>
       </Link>
-      {route !== "/profile" && <Separator />}
+      {route !== "/profile" && <Separator className="my-2 lg:my-0" />}
     </>
   );
 };

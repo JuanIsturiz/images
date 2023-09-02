@@ -45,7 +45,7 @@ const CommentList: React.FC<CommentListProps> = ({
   }
 
   return (
-    <ScrollArea className="h-80">
+    <ScrollArea className="h-64 md:h-80">
       {comments.map((comment) => {
         return (
           <div key={comment._id} className="p-1 mb-2">

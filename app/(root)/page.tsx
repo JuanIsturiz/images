@@ -17,7 +17,7 @@ export default async function Home() {
   const validImages = images.map(validateImage);
 
   return (
-    <section className="px-1 my-3 md:flex-1">
+    <section className="mt-14 px-8 sm:px-1 mb-14 sm:mb-20 lg:mb-2 sm:mx-auto lg:ml-52">
       <ImageList
         images={validImages}
         userId={userInfo ? parseJson(userInfo._id) : null}

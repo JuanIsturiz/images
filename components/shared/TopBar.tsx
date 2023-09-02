@@ -15,11 +15,11 @@ const TopBar = () => {
   const pathname = usePathname();
 
   return (
-    <div className="h-[8vh] w-auto flex justify-between items-center p-2 border-b-2">
+    <div className="fixed md:pl-16 lg:pl-2 z-20 w-full h-14 flex justify-between items-center p-2 dark:bg-[background]">
       <div>
         <Link href={"/"}>
           <div className="flex items-center gap-2">
-            <Image size={26} />
+            <Image size={28} />
             <h1 className="hidden font-semibold text-2xl uppercase md:block">
               images
             </h1>
