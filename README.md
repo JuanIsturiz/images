@@ -8,7 +8,7 @@ Thank you for joining me in my coding journey!!
 
 ### Description
 
-A social media like web application where people can share their own images but also like and follow and discover other creators. `images` was made with next13 (server actions), clerk, mongoDB tailwindcss and shadcn/ui.
+A social media like web application where people can share their own images but also like and follow and discover other creators. `images` was made with next.js 13 (server actions), clerk, mongoDB, tailwindcss and shadcn/ui.
 
 ### Setup
 
@@ -62,7 +62,7 @@ A social media like web application where people can share their own images but 
 
 ### Preview
 
-Click here for a live preview of [theater.io](https://theater-io.vercel.app/) deployed at Vercel.
+Click here for a live preview of [images](https://images-ten-lilac.vercel.app/) deployed at Vercel.
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
