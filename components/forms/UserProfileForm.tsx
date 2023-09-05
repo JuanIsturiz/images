@@ -30,14 +30,15 @@ interface User {
   id: string;
   username: string;
   name: string;
-  imageUrl: string;
+  image: string;
+  bio?: string;
 }
 
-interface OnboardingFormProps {
+interface UserProfileFormProps {
   user: User;
 }
 
-const OnboardingForm: React.FC<OnboardingFormProps> = ({ user }) => {
+const UserProfileForm: React.FC<UserProfileFormProps> = ({ user }) => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -52,10 +53,10 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ user }) => {
   const form = useForm<z.infer<typeof UserValidation>>({
     resolver: zodResolver(UserValidation),
     defaultValues: {
-      profile_photo: user.imageUrl,
+      profile_photo: user.image,
       username: user.username,
       name: user.name,
-      bio: "",
+      bio: user.bio,
     },
   });
 
@@ -230,4 +231,4 @@ const OnboardingForm: React.FC<OnboardingFormProps> = ({ user }) => {
   );
 };
 
-export default OnboardingForm;
+export default UserProfileForm;

@@ -75,9 +75,7 @@ export async function getImages(page: number, pageSize: number) {
 
     const isNext = totalImageCount > skipAmount + images.length;
 
-    const validImages = images.map(validateImage);
-
-    return { data: validImages, isNext };
+    return { data: images.map(validateImage), isNext };
   } catch (error: any) {
     throw new Error(`Failed to fetch images: ${error.message}`);
   }
@@ -102,7 +100,7 @@ export async function getUserImagesById(userId: string) {
           select: "id image username",
         },
       });
-    return images;
+    return images.map(validateImage);
   } catch (error: any) {
     throw new Error(`Failed to fetch images: ${error.message}`);
   }
@@ -177,25 +175,5 @@ export async function deleteImage(
     return res;
   } catch (error: any) {
     throw new Error(`Failed to delete image: ${error.message}`);
-  }
-}
-
-export async function getOldActivity(userId: string, following: string[]) {
-  try {
-    connectDB();
-
-    const images = await Image.find({
-      author: {
-        $in: following,
-      },
-    }).populate({
-      path: "author",
-      model: User,
-      select: "id username image",
-    });
-
-    return images;
-  } catch (error: any) {
-    throw new Error(`Failed to get activities: ${error.message}`);
   }
 }

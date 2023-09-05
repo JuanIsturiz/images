@@ -2,7 +2,7 @@ import ImageList from "@/components/shared/ImageList";
 import Pagination from "@/components/shared/Pagination";
 import { getImages } from "@/lib/actions/image.actions";
 import { getUser } from "@/lib/actions/user.actions";
-import { parseJson, validateImage } from "@/lib/utils";
+import { parseJson } from "@/lib/utils";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 

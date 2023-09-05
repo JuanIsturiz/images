@@ -83,9 +83,9 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
           <div className="mb-2">
             <p className="text-center mb-1">Zoom</p>
             <Slider
-              defaultValue={[1.5]}
+              defaultValue={[1.2]}
               max={3}
-              min={0.8}
+              min={0.7}
               step={0.1}
               value={[zoom]}
               onValueChange={(val) => setZoom(val[0])}

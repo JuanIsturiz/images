@@ -1,3 +1,69 @@
+# images
+
+Hello again!! Welcome to images a photo gallery social media.
+
+---
+
+Thank you for joining me in my coding journey!!
+
+### Description
+
+A social media like web application where people can share their own images but also like and follow and discover other creators. `images` was made with next13 (server actions), clerk, mongoDB tailwindcss and shadcn/ui.
+
+### Setup
+
+1. Run `npm install` so every dependency in the package.json file installs correctly.
+2. Create a .env file and pass the correct information for every key (use sample.env as an example).
+3. Run `npm run dev` to start the application on a local server.
+
+### Dependencies
+
+- @clerk/nextjs
+- @clerk/themes
+- @hookform/resolvers
+- @radix-ui/react-avatar
+- @radix-ui/react-dialog
+- @radix-ui/react-dropdown-menu
+- @radix-ui/react-label
+- @radix-ui/react-popover
+- @radix-ui/react-scroll-area
+- @radix-ui/react-separator
+- @radix-ui/react-slider
+- @radix-ui/react-slot
+- @radix-ui/react-toast
+- @types/node
+- @types/react
+- @types/react-dom
+- @uploadthing/react
+- autoprefixer
+- class-variance-authority
+- clsx
+- cmdk
+- dayjs
+- eslint
+- eslint-config-next
+- lucide-react
+- mongoose
+- next
+- next-themes
+- postcss
+- react
+- react-dom
+- react-easy-crop
+- react-hook-form
+- tailwind-merge
+- tailwindcss
+- tailwindcss-animate
+- typescript
+- uploadthing
+- zod
+
+---
+
+### Preview
+
+Click here for a live preview of [theater.io](https://theater-io.vercel.app/) deployed at Vercel.
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started

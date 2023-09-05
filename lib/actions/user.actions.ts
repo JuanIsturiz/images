@@ -5,6 +5,7 @@ import { connectDB } from "../db";
 import User from "../models/user.model";
 import { FilterQuery } from "mongoose";
 import { createActivity, deleteActivity } from "./activity.actions";
+import { validateFollowUser } from "../utils";
 
 export async function getUser(id: string) {
   try {
@@ -126,8 +127,8 @@ export async function getFollow(userId: string) {
       });
 
     return {
-      followers: user.followers,
-      following: user.following,
+      followers: user.followers.map(validateFollowUser),
+      following: user.following.map(validateFollowUser),
     };
   } catch (error: any) {
     throw new Error(`Failed to get followers and followings: ${error.message}`);

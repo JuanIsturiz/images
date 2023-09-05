@@ -1,6 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Sheet,
   SheetClose,
@@ -10,14 +8,14 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Image, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import Link from "next/link";
 
 import { currentUser } from "@clerk/nextjs";
-import SheetInfo from "./SheetInfo";
 import { getUser } from "@/lib/actions/user.actions";
 import { sideLinks } from "@/constants";
 import SideLink from "./SideLink";
+import Image from "next/image";
 
 async function SideSheet() {
   const user = await currentUser();
@@ -38,13 +36,18 @@ async function SideSheet() {
           <Menu />
         </Button>
       </SheetTrigger>
-      <SheetContent side={"left"}>
+      <SheetContent side={"left"} className="p-3">
         <SheetHeader>
           <SheetTitle>
             <Link href={"/"}>
               <div className="flex items-center gap-2">
-                <Image size={26} />
-                <h1 className="hidden font-semibold text-2xl uppercase md:block">
+                <Image
+                  src={"/assets/logo.svg"}
+                  alt="Images logo"
+                  width={30}
+                  height={30}
+                />
+                <h1 className="hidden font-semibold text-2xl md:block">
                   images
                 </h1>
               </div>

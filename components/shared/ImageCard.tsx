@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { GripHorizontal, Heart, Info, Share, Trash } from "lucide-react";
+import { Download, GripHorizontal, Heart, Info, Trash } from "lucide-react";
 import { useState } from "react";
 import { deleteImage } from "@/lib/actions/image.actions";
 import { useToast } from "../ui/use-toast";
@@ -86,6 +86,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
             path={pathname}
             userId={userId}
             authorId={image.author._id}
+            imageInfo={{ url: image.imageUrl, title: image.title }}
             onDelete={handleDelete}
             openDialog={() => setIsOpen(true)}
           />
@@ -135,9 +136,37 @@ const OptionMenu: React.FC<{
   path: string;
   authorId: string;
   userId: string | null;
+  imageInfo: {
+    url: string;
+    title: string;
+  };
   openDialog: () => void;
   onDelete: () => void;
-}> = ({ path, authorId, userId, openDialog, onDelete }) => {
+}> = ({ path, authorId, userId, imageInfo, openDialog, onDelete }) => {
+  function downloadImage() {
+    fetch(imageInfo.url, {
+      method: "GET",
+      headers: {},
+    })
+      .then((response) => {
+        response.arrayBuffer().then(function (buffer) {
+          const url = window.URL.createObjectURL(new Blob([buffer]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute(
+            "download",
+            `${imageInfo.title.replaceAll(" ", "-").replaceAll(".", "_")}.${
+              imageInfo.url.split(".")[2]
+            }`
+          ); //or any other extension
+          document.body.appendChild(link);
+          link.click();
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -157,9 +186,12 @@ const OptionMenu: React.FC<{
           <Info />
           <span>View Details</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer flex gap-2 items-center">
-          <Share />
-          <span>Share</span>
+        <DropdownMenuItem
+          className="cursor-pointer flex gap-2 items-center"
+          onClick={downloadImage}
+        >
+          <Download />
+          <span>Download</span>
         </DropdownMenuItem>
         {path.includes("/profile") && authorId === userId && (
           <DropdownMenuItem

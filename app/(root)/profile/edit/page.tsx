@@ -4,28 +4,26 @@ import { Separator } from "@/components/ui/separator";
 import { getUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 export default async function Page() {
   const user = await currentUser();
 
   const userInfo = await getUser(user?.id ?? "");
 
-  if (userInfo.onboarded) redirect("/");
-
   const userProp = {
-    id: user?.id ?? "",
-    image: user?.imageUrl ?? "",
-    username: user?.username ?? "",
-    name: `${user?.firstName} ${user?.lastName}`,
+    id: userInfo.id ?? "",
+    image: userInfo.image ?? "",
+    username: userInfo.username ?? "",
+    bio: userInfo.bio ?? "",
+    name: userInfo.name ?? "",
   };
 
   return (
-    <section className="mt-14">
+    <section className="w-full mt-14 sm:px-1 mb-14 sm:mb-20 lg:mb-2 lg:ml-52">
       <div className="my-4">
-        <h2 className="text-2xl text-center font-medium">Onboarding</h2>
+        <h2 className="text-2xl text-center font-medium">Edit Profile</h2>
         <h2 className="text-lg text-center text-zinc-600 dark:text-zinc-400">
-          Complete your profile to unlock all images features
+          Update your profile info!
         </h2>
       </div>
       <UserProfileForm user={userProp} />
@@ -35,9 +33,9 @@ export default async function Page() {
         <Separator className="w-1/5" />
       </div>
       <div className="flex justify-center mb-2">
-        <Link href={"/"}>
+        <Link href={`/profile/${userInfo.id}`}>
           <Button variant="link" className="text-lg">
-            Return to homepage
+            Return to profile
           </Button>
         </Link>
       </div>

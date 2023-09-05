@@ -4,9 +4,9 @@ import ImageList from "@/components/shared/ImageList";
 import { Button } from "@/components/ui/button";
 import { getUserImagesById } from "@/lib/actions/image.actions";
 import { getFollow, getUser } from "@/lib/actions/user.actions";
-import { parseJson, validateFollowUser, validateImage } from "@/lib/utils";
+import { parseJson } from "@/lib/utils";
 import { currentUser } from "@clerk/nextjs";
-import { Home } from "lucide-react";
+import { Home, Settings } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -34,11 +34,6 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const userImages = await getUserImagesById(parseJson(user._id));
 
-  const validImages = userImages.map(validateImage);
-
-  const validFollowers = followInfo.followers.map(validateFollowUser);
-  const validFollowing = followInfo.following.map(validateFollowUser);
-
   const isFollowed = user.followers
     .map(parseJson)
     .some((userId: string) => userId === parseJson(userInfo._id));
@@ -49,11 +44,11 @@ export default async function Page({ params }: { params: { id: string } }) {
         <div className="relative w-full rounded bg-zinc-100 dark:bg-zinc-950 h-40 md:h-[18vh] lg:h-[20vh]">
           <div className="absolute top-2 md:left-52 md:top-4 text-lg">
             <div className="flex gap-2 md:mb-2">
-              <FollowList list={validFollowing} title="Following" />
-              <FollowList list={validFollowers} title="Followers" />
+              <FollowList list={followInfo.following} title="Following" />
+              <FollowList list={followInfo.followers} title="Followers" />
             </div>
             <div className="ml-2">
-              <p>Images {validImages.length}</p>
+              <p>Images {userImages.length}</p>
             </div>
           </div>
           <Image
@@ -71,8 +66,9 @@ export default async function Page({ params }: { params: { id: string } }) {
             className="block absolute top-2 right-2 md:hidden md:-bottom-16 rounded-full border-4 border-[background] dark:border-[background]"
           />
           <div className="absolute text-md left-2 bottom-2 md:hidden">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+            <div className="flex items-center gap-2">
               <h4>@{user.username}</h4>
+              {parseJson(userInfo.id) === parseJson(user.id) && <EditButton />}
               <FollowButton
                 clerkSigned={!!clerkUser}
                 currentUserId={parseJson(userInfo._id)}
@@ -87,8 +83,9 @@ export default async function Page({ params }: { params: { id: string } }) {
           </div>
         </div>
         <div className="hidden mt-1 ml-28 md:ml-52 mb-6 md:block">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+          <div className="flex items-center gap-2">
             <h4 className="sm:text-xl">@{user.username}</h4>
+            {parseJson(userInfo.id) === parseJson(user.id) && <EditButton />}
             <FollowButton
               clerkSigned={!!clerkUser}
               currentUserId={parseJson(userInfo._id)}
@@ -104,10 +101,21 @@ export default async function Page({ params }: { params: { id: string } }) {
       </div>
       <div className="mt-44 md:mt-52 mb-14 sm:mb-0">
         <ImageList
-          images={validImages}
+          images={userImages}
           userId={userInfo ? parseJson(userInfo._id) : null}
         />
       </div>
     </section>
+  );
+}
+
+function EditButton() {
+  return (
+    <Link href={"/profile/edit"}>
+      <Button size={"sm"} className="h-auto py-0.5 px-2 gap-1">
+        <Settings size={18} />
+        <span>Edit</span>
+      </Button>
+    </Link>
   );
 }

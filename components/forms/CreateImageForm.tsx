@@ -126,7 +126,7 @@ const CreateImageForm: React.FC<CreateImageFormProps> = ({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col sm:flex-row gap-2 w-full p-2 dark:bg-zinc-950 rounded border shadow-lg  dark:border-zinc-900"
+          className="flex flex-col sm:flex-row gap-2 w-full p-2 dark:bg-zinc-950 rounded border shadow-lg dark:border-zinc-900"
         >
           <div>
             {!image && (

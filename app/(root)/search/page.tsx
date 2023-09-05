@@ -26,13 +26,14 @@ export default async function Page({
     pageNumber: searchParams?.page ? +searchParams.page : 1,
     pageSize: 25,
   });
+
   return (
     <section className="w-full mt-14 sm:px-1 mb-14 sm:mb-20 lg:mb-2 lg:ml-52">
-      <div className="max-w-2xl my-8 mx-auto">
+      <div className="max-w-2xl my-8 mx-auto px-1">
         <SearchBar />
       </div>
       <div>
-        <ScrollArea className="h-[70vh]">
+        <ScrollArea className="h-[70vh] px-1">
           <div className="max-w-3xl mx-auto">
             <Separator />
             {result.users.length ? (
